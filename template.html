@@ -201,6 +201,10 @@ a.note:hover::after { transform: scale(1.35); }
 .ghosts.stack span:nth-child(2) { transform: translateX(-.7em); opacity: .78; }
 .ghosts.stack span:nth-child(3) { transform: translateX(-.2em); opacity: .6; }
 
+/* этикетки по краям — середина кадра остаётся открытой */
+.cards.apart { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; }
+.cards.apart .card { flex: 0 1 30%; }
+
 /* на вертикальном экране держим в кадре главное */
 @media (max-aspect-ratio: 1/1) {
   .scene .bg { object-position: var(--x, 50%) 50%; }
@@ -209,6 +213,8 @@ a.note:hover::after { transform: scale(1.35); }
   .topbar span:last-child { display: none; }
   .diptych { grid-template-columns: 1fr; }
   .diptych .half { min-height: 85vh; }
+  .cards.apart { flex-direction: column; align-items: stretch; }
+  .cards.apart .card { flex: none; }
   .steps { flex-direction: column; }
   .steps .arrow { transform: rotate(90deg); }
   .storyboard .caps { grid-template-columns: repeat(2, 1fr); row-gap: 14px; }
@@ -457,10 +463,9 @@ a.note:hover::after { transform: scale(1.35); }
 <section class="scene" data-chapter="V. Духи, которые отменяют автора" style="display:block">
   <img class="bg" src="img/15-mountain.webp" style="--x:55%" alt="Гора в разрезе: слои красной и охристой породы складываются в тёплую полость-утробу, в глубине свернулась маленькая фигура">
   <div class="veil v-top"></div>
-  <div class="veil v-bottom"></div>
   <div class="split content">
     <p class="quote center r"><a class="note" data-note="Интроекция и инкорпорация — работа символа против магии (Абрахам и Торок)">Его вобрали. Но вобрали только запах.</a></p>
-    <div class="cards tilt r" style="--d:.5s">
+    <div class="cards tilt apart r" style="--d:.5s">
       <div class="card"><h3><a class="note" data-note="Область созидания — третий уровень психики без внешнего объекта (Балинт)">Пещера</a></h3><p>семь лет внутри горы — почти буквальная утроба</p><p class="small">Ференци, «Таласса», 1924</p></div>
       <div class="card"><h3><a class="note" data-note="Символическое уравнивание">Трапеза</a></h3><p>где не родился символ, «быть принятым» — значит «быть съеденным»</p><p class="small">Сегал, 1957</p></div>
     </div>

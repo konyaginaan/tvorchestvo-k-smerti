@@ -111,6 +111,10 @@ h1 { font-size: 140px; line-height: 1.02; }
 .ghosts.stack span:nth-child(2) { transform: translateX(-.7em); opacity: .78; }
 .ghosts.stack span:nth-child(3) { transform: translateX(-.2em); opacity: .6; }
 
+/* этикетки по краям — середина кадра остаётся открытой */
+.cards.apart { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; }
+.cards.apart .card { flex: 0 1 30%; }
+
 /* служебное */
 #bar { position: fixed; left: 0; bottom: 0; height: 3px; background: var(--accent); width: 0; transition: width .6s ease; z-index: 20; opacity: .7; }
 #hint { position: fixed; left: 50%; bottom: 26px; transform: translateX(-50%); z-index: 20; font-size: 14px; letter-spacing: 1px; color: var(--soft); background: rgba(14,11,9,.7); border: 1px solid var(--line); border-radius: 40px; padding: 8px 20px; transition: opacity 1s; white-space: nowrap; }
@@ -278,10 +282,9 @@ body.pointer #counter { opacity: .7; }
 <section class="scene slide" data-label="V. Назад, в утробу" style="display:block">
   <img class="bg" src="img/15-mountain.webp" alt="Гора в разрезе, внутри тёплая полость, в ней свернулась фигура">
   <div class="veil v-top"></div>
-  <div class="veil v-bottom"></div>
   <div class="content" style="height:100%; display:flex; flex-direction:column; justify-content:space-between; padding:150px 140px 120px">
     <p class="quote center r" style="--d:.4s">Его вобрали. Но вобрали только запах.</p>
-    <div class="cards tilt r step">
+    <div class="cards tilt apart r step">
       <div class="card"><h3>Пещера</h3><p>семь лет внутри горы — почти буквальная утроба</p><p class="small">Ференци, «Таласса», 1924</p></div>
       <div class="card"><h3>Трапеза</h3><p>где не родился символ, «быть принятым» — значит «быть съеденным»</p><p class="small">Сегал, 1957</p></div>
     </div>
