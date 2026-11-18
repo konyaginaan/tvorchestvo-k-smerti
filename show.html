@@ -101,6 +101,16 @@ h1 { font-size: 140px; line-height: 1.02; }
 .cover .links span { color: #EFE6D6; }
 .cover .scroll-cue { color: #EFE6D6; }
 
+/* слова «совесть, Бог, радость» — столбиком в правом верхнем углу, лицо мальчика открыто */
+.v-tr { background: radial-gradient(ellipse 70% 105% at 100% 0%, rgba(14,11,9,.92) 0%, rgba(14,11,9,.72) 45%, rgba(14,11,9,0) 78%); }
+.ghost-right { align-items: flex-start; }
+.ghost-right .content { text-align: right; }
+.ghost-right .content > * { margin-left: auto; max-width: 40%; }
+.ghosts.stack { flex-direction: column; align-items: flex-end; gap: 0; }
+.ghosts.stack span { line-height: 1.02; transform: none; opacity: .95; }
+.ghosts.stack span:nth-child(2) { transform: translateX(-.7em); opacity: .78; }
+.ghosts.stack span:nth-child(3) { transform: translateX(-.2em); opacity: .6; }
+
 /* служебное */
 #bar { position: fixed; left: 0; bottom: 0; height: 3px; background: var(--accent); width: 0; transition: width .6s ease; z-index: 20; opacity: .7; }
 #hint { position: fixed; left: 50%; bottom: 26px; transform: translateX(-50%); z-index: 20; font-size: 14px; letter-spacing: 1px; color: var(--soft); background: rgba(14,11,9,.7); border: 1px solid var(--line); border-radius: 40px; padding: 8px 20px; transition: opacity 1s; white-space: nowrap; }
@@ -227,11 +237,11 @@ body.pointer #counter { opacity: .7; }
   </div>
 </section>
 
-<section class="scene slide top" data-label="III. Язык, которого нет">
+<section class="scene slide top ghost-right" data-label="III. Язык, которого нет">
   <img class="bg" src="img/11-boy.webp" alt="Маленький Гренуй нюхает щепку, вокруг цветные облака запахов">
-  <div class="veil v-top"></div>
-  <div class="content">
-    <div class="ghosts r" style="--d:.3s"><span>совесть</span><span>Бог</span><span>радость</span></div>
+  <div class="veil v-tr"></div>
+  <div class="content" style="padding:120px 120px 0">
+    <div class="ghosts stack r" style="--d:.3s"><span>совесть</span><span>Бог</span><span>радость</span></div>
     <p class="punch r step">Опыт, для которого нет языка, некому воспринять.</p>
   </div>
 </section>

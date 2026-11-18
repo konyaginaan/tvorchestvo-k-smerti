@@ -191,6 +191,16 @@ a.note:hover::after { transform: scale(1.35); }
 .cover .links span { color: #EFE6D6; }
 .cover .scroll-cue { color: #EFE6D6; }
 
+/* слова «совесть, Бог, радость» — столбиком в правом верхнем углу, лицо мальчика открыто */
+.v-tr { background: radial-gradient(ellipse 70% 105% at 100% 0%, rgba(14,11,9,.92) 0%, rgba(14,11,9,.72) 45%, rgba(14,11,9,0) 78%); }
+.ghost-right { align-items: flex-start; }
+.ghost-right .content { text-align: right; }
+.ghost-right .content > * { margin-left: auto; max-width: 40%; }
+.ghosts.stack { flex-direction: column; align-items: flex-end; gap: 0; }
+.ghosts.stack span { line-height: 1.02; transform: none; opacity: .95; }
+.ghosts.stack span:nth-child(2) { transform: translateX(-.7em); opacity: .78; }
+.ghosts.stack span:nth-child(3) { transform: translateX(-.2em); opacity: .6; }
+
 /* на вертикальном экране держим в кадре главное */
 @media (max-aspect-ratio: 1/1) {
   .scene .bg { object-position: var(--x, 50%) 50%; }
@@ -204,7 +214,10 @@ a.note:hover::after { transform: scale(1.35); }
   .storyboard .caps { grid-template-columns: repeat(2, 1fr); row-gap: 14px; }
   .content { padding-bottom: 9vh; }
   .pos-left { align-items: flex-end; }
-  .pos-left .content > *, .pos-right .content > * { max-width: 100%; }
+  .pos-left .content > *, .pos-right .content > *, .ghost-right .content > * { max-width: 100%; }
+  .ghost-right { align-items: flex-end; }
+  .ghost-right .content { padding: 0 6vw 9vh; }
+  .ghost-right .v-tr { background: linear-gradient(to top, rgba(14,11,9,0.95) 0%, rgba(14,11,9,0.72) 35%, rgba(14,11,9,0) 65%); }
   .v-left, .v-right { background: linear-gradient(to top, rgba(14,11,9,0.95) 0%, rgba(14,11,9,0.72) 35%, rgba(14,11,9,0) 65%); }
   .page { padding: 44px 26px 36px; }
   #drawer .body { padding: 18px 20px 60px; }
@@ -383,11 +396,11 @@ a.note:hover::after { transform: scale(1.35); }
   <div class="inner"><p class="numeral r">III</p><h2 class="r" style="--d:.4s">Язык, которого нет</h2><div class="rule r" style="--d:.7s"></div></div>
 </section>
 
-<section class="scene pos-top" data-chapter="III. Язык, которого нет">
+<section class="scene pos-top ghost-right" data-chapter="III. Язык, которого нет">
   <img class="bg" src="img/11-boy.webp" style="--x:45%" alt="Маленький Гренуй сидит на полу с закрытыми глазами и нюхает щепку, вокруг цветные облака запахов, рядом раскрытая пустая книга">
-  <div class="veil v-top"></div>
+  <div class="veil v-tr"></div>
   <div class="content">
-    <div class="ghosts r"><span>совесть</span><span>Бог</span><span>радость</span></div>
+    <div class="ghosts stack r"><span>совесть</span><span>Бог</span><span>радость</span></div>
     <p class="cite r" style="--d:.4s">— слова, которые Гренуй понимает с трудом: у них нет запаха</p>
     <p class="punch r" style="--d:.7s"><a class="note" data-note="До-символические формы символизации">Опыт, для которого нет языка, некому воспринять.</a></p>
   </div>
