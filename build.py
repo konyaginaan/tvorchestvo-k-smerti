@@ -197,7 +197,7 @@ const md = s => window.marked ? marked.parse(s) : '<p>' + s.replace(/\n\n/g, '</
 let stack = [];
 function render(name) {
   const n = NOTES[name]; if (n === undefined) return;
-  lbl.textContent = SITE.has(name) ? 'заметка к статье' : 'заметка из рабочей базы';
+  lbl.textContent = name.startsWith('Цитата:') ? 'цитата' : (SITE.has(name) ? 'заметка к статье' : 'заметка из рабочей базы');
   body.innerHTML = '<h2 class="ntitle"></h2><div class="md"></div>';
   body.querySelector('.ntitle').textContent = name;
   body.querySelector('.md').innerHTML = md(n);
