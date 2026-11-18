@@ -118,6 +118,26 @@ def chapters():
     return res
 
 
+IMG_BG = re.compile(r'<img class="bg" src="img/([\w-]+)\.webp"([^>]*)>')
+
+
+def videos(tpl):
+    """Если рядом с картинкой лежит vid/<имя>.mp4 — сцена играет видео, картинка становится постером."""
+    used = []
+
+    def rep(m):
+        name, attrs = m.group(1), m.group(2)
+        alt = re.search(r'alt="([^"]*)"', attrs)
+        if not alt or not alt.group(1) or not os.path.exists(os.path.join(HERE, 'vid', name + '.mp4')):
+            return m.group(0)
+        used.append(name)
+        rest = re.sub(r'\s*alt="[^"]*"', '', attrs)
+        return ('<video class="bg" src="vid/%s.mp4" poster="img/%s.webp" muted loop playsinline preload="metadata" '
+                'aria-label="%s"%s></video>' % (name, name, alt.group(1), rest))
+    out = IMG_BG.sub(rep, tpl)
+    return out, used
+
+
 def js(obj):
     return json.dumps(obj, ensure_ascii=False).replace('</', '<\\/')
 
@@ -125,13 +145,14 @@ def js(obj):
 def main():
     notes = {n: clean_note(n, open(find(n), encoding='utf-8').read()) for n in NOTES}
     tpl = open(os.path.join(HERE, 'template.html'), encoding='utf-8').read()
-    out = tpl.replace('/*NOTES*/{}', js(notes)).replace('/*TEXTS*/{}', js(chapters()))
+    page, vids = videos(tpl)
+    out = page.replace('/*NOTES*/{}', js(notes)).replace('/*TEXTS*/{}', js(chapters()))
     for n in re.findall(r'data-note=(?:"([^"]+)"|\'([^\']+)\')', tpl):
         name = html.unescape(n[0] or n[1])
         if name not in notes:
             raise SystemExit('ссылка на заметку вне списка: ' + name)
     open(os.path.join(HERE, 'index.html'), 'w', encoding='utf-8').write(out)
-    print('index.html: %d заметок, %d КБ' % (len(notes), len(out.encode()) // 1024))
+    print('index.html: %d заметок, %d видео%s, %d КБ' % (len(notes), len(vids), (' (' + ', '.join(vids) + ')') if vids else '', len(out.encode()) // 1024))
 
 
 if __name__ == '__main__':

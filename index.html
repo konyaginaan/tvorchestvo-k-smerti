@@ -567,6 +567,14 @@ document.querySelectorAll('.book .more').forEach(b => b.addEventListener('click'
 const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) e.target.classList.add('on'); }), { threshold: 0.25 });
 document.querySelectorAll('.scene').forEach(s => io.observe(s));
 
+// живые кадры: видео играет, только пока сцена на экране
+const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const vio = new IntersectionObserver(es => es.forEach(e => {
+  const v = e.target;
+  if (e.isIntersecting && !calm) v.play().catch(() => {}); else v.pause();
+}), { threshold: 0.15 });
+document.querySelectorAll('video.bg').forEach(v => vio.observe(v));
+
 // прогресс и название главы
 const bar = document.getElementById('progress'), topbar = document.getElementById('topbar'), chName = document.getElementById('chapterName');
 const scenes = [...document.querySelectorAll('[data-chapter]')];
