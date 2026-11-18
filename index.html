@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Творчество к смерти</title>
+<meta name="description" content="Психоаналитический доклад по роману Патрика Зюскинда «Парфюмер»: Жан-Батист Гренуй и мир частичных объектов. Конягина Анастасия, декабрь 2026.">
+<meta property="og:title" content="Творчество к смерти">
+<meta property="og:description" content="Жан-Батист Гренуй и мир частичных объектов — доклад по роману Патрика Зюскинда «Парфюмер»">
+<meta property="og:image" content="https://konyaginaan.github.io/tvorchestvo-k-smerti/img/01-cover.webp">
+<meta property="og:type" content="article">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2314100E'/%3E%3Cpath d='M26 14h12v8l6 8v20a4 4 0 0 1-4 4H24a4 4 0 0 1-4-4V30l6-8z' fill='%23E3A781'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Lora:ital,wght@0,400;0,600;1,400&family=Caveat:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #14100E;
+  --bg2: #1B1613;
+  --text: #F2EADC;
+  --soft: #CFC2AE;
+  --muted: #A99A86;
+  --accent: #E3A781;
+  --line: rgba(227,167,129,0.35);
+  --card: rgba(24,19,16,0.84);
+  --paper: #F2EADC;
+  --paper-ink: #2A211C;
+  --paper-soft: #4B3F37;
+  --rust: #9A4528;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--bg); color: var(--text); font-family: 'Lora', Georgia, serif; font-size: 18px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+img { display: block; }
+a { color: inherit; }
+button { font: inherit; }
+
+/* прогресс и шапка */
+#progress { position: fixed; left: 0; top: 0; height: 3px; width: 0; background: var(--accent); z-index: 50; }
+.topbar { position: fixed; top: 0; left: 0; right: 0; display: flex; justify-content: space-between; align-items: center; padding: 14px 22px; z-index: 40; font-size: 14px; letter-spacing: 2px; text-transform: uppercase; color: var(--soft); background: linear-gradient(to bottom, rgba(14,11,9,0.75), rgba(14,11,9,0)); pointer-events: none; opacity: 0; transition: opacity .6s; }
+.topbar.show { opacity: 1; }
+.topbar span:last-child { font-family: 'Caveat', cursive; font-size: 22px; letter-spacing: 0; text-transform: none; color: var(--accent); }
+
+/* сцены */
+.scene { position: relative; min-height: 100vh; min-height: 100svh; display: flex; align-items: flex-end; overflow: hidden; background: var(--bg); }
+.scene .bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transform: scale(1.08); transition: opacity 1.8s ease-out, transform 14s ease-out; }
+.scene.on .bg { opacity: 1; transform: scale(1); }
+.scene .bg.contain { object-fit: contain; }
+.veil { position: absolute; inset: 0; background: linear-gradient(to top, rgba(14,11,9,0.96) 0%, rgba(14,11,9,0.78) 32%, rgba(14,11,9,0) 66%); }
+.veil.deep { background: linear-gradient(to top, rgba(14,11,9,0.97) 0%, rgba(14,11,9,0.84) 45%, rgba(14,11,9,0) 80%); }
+.veil.top { background: linear-gradient(to bottom, rgba(14,11,9,0.92) 0%, rgba(14,11,9,0.65) 32%, rgba(14,11,9,0) 62%); }
+.veil.blood { background: linear-gradient(to top, rgba(70,24,10,0.97) 0%, rgba(70,24,10,0.84) 45%, rgba(70,24,10,0) 80%); }
+.scene.top-text { align-items: flex-start; }
+.content { position: relative; z-index: 2; width: 100%; max-width: 1360px; margin: 0 auto; padding: 0 6vw 11vh; }
+.top-text .content { padding: 15vh 6vw 0; }
+.center { text-align: center; }
+
+/* типографика */
+h1, h2, h3, .quote, .punch, .big, .year { font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 500; margin: 0; }
+h1 { font-size: clamp(54px, 9vw, 132px); line-height: 1.02; }
+.sub { font-family: 'Cormorant Garamond', Georgia, serif; font-style: italic; font-size: clamp(24px, 3vw, 44px); color: #E8DDC9; margin: 14px 0 0; }
+.author { font-size: clamp(14px, 1.3vw, 18px); letter-spacing: 3px; text-transform: uppercase; color: var(--soft); margin: 26px 0 0; }
+.eyebrow { font-family: 'Caveat', cursive; font-size: clamp(24px, 2.4vw, 36px); color: var(--accent); margin: 0 0 6px; }
+.quote { font-style: italic; font-size: clamp(30px, 4.3vw, 66px); line-height: 1.14; }
+.punch { font-style: italic; font-size: clamp(24px, 2.8vw, 42px); line-height: 1.25; color: var(--accent); margin: 18px 0 0; }
+.cite { font-size: clamp(14px, 1.2vw, 17px); letter-spacing: .5px; color: var(--soft); margin: 12px 0 0; }
+.big { font-size: clamp(38px, 6vw, 92px); line-height: 1.15; }
+.year { font-size: clamp(64px, 9vw, 130px); line-height: 1; }
+.shadow, .content p, .content h1, .content h3 { text-shadow: 0 2px 18px rgba(0,0,0,0.85); }
+.foot { font-size: clamp(13px, 1.1vw, 15px); line-height: 1.5; color: var(--soft); border-top: 1px solid var(--line); padding-top: 12px; margin: 22px 0 0; max-width: 980px; }
+
+/* ссылки на заметки */
+a.note { text-decoration: underline; text-decoration-color: rgba(227,167,129,0.7); text-decoration-thickness: 2px; text-underline-offset: .18em; cursor: pointer; transition: color .2s; }
+a.note:hover, a.note:focus-visible { color: var(--accent); outline: none; }
+a.note::after { content: '°'; font-family: 'Lora', serif; font-style: normal; font-size: .55em; vertical-align: super; color: var(--accent); margin-left: .08em; }
+
+/* карточки и шаги */
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; margin-top: 26px; }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 6px; padding: 18px 22px; }
+.card h3 { font-size: clamp(22px, 2vw, 32px); font-weight: 600; margin: 0 0 6px; }
+.card p { margin: 0; font-size: clamp(15px, 1.25vw, 18px); color: #E8DDC9; text-shadow: none; }
+.card .small { margin-top: 8px; font-size: 14px; color: var(--muted); }
+.card .tag { font-family: 'Caveat', cursive; font-size: 22px; color: var(--accent); margin: 0 0 2px; }
+.steps { display: flex; gap: 12px; align-items: stretch; margin-top: 26px; }
+.steps .card { flex: 1 1 0; min-width: 0; }
+.steps .arrow { align-self: center; color: var(--accent); font-size: 28px; flex: none; }
+.chips { display: flex; flex-wrap: wrap; gap: 12px; margin: 20px 0 4px; }
+.chip { border: 1px solid rgba(227,167,129,0.55); border-radius: 40px; padding: 6px 20px; background: rgba(24,19,16,0.7); font-size: clamp(15px, 1.4vw, 20px); }
+.ghosts { display: flex; flex-wrap: wrap; gap: 0 2.4em; }
+.ghosts span { font-family: 'Cormorant Garamond', Georgia, serif; font-style: italic; font-size: clamp(36px, 5vw, 72px); color: var(--accent); }
+
+/* диптих */
+.diptych { position: relative; display: grid; grid-template-columns: 1fr 1fr; align-items: stretch; gap: 6px; min-height: 100vh; min-height: 100svh; background: #0E0B09; }
+.diptych .half { position: relative; overflow: hidden; display: flex; align-items: flex-end; }
+.diptych .half .content { padding: 0 4vw 11vh; }
+
+/* раскадровка */
+.storyboard { min-height: auto; display: block; padding: 12vh 0 10vh; }
+.storyboard .strip { position: relative; width: 100%; max-width: 1600px; margin: 0 auto; padding: 0 3vw; }
+.storyboard .strip img { width: 100%; height: auto; border-radius: 4px; opacity: 0; transform: scale(1.03); transition: opacity 1.6s, transform 6s; }
+.storyboard.on .strip img { opacity: 1; transform: scale(1); }
+.storyboard .caps { display: grid; grid-template-columns: repeat(4, 1fr); text-align: center; max-width: 1600px; margin: 18px auto 0; padding: 0 3vw; }
+.storyboard .caps h3 { font-size: clamp(18px, 2vw, 30px); font-weight: 600; }
+.storyboard .caps p { margin: 2px 0 0; color: var(--soft); font-size: clamp(13px, 1.2vw, 17px); }
+
+/* появление */
+.r { opacity: 0; transform: translateY(22px); filter: blur(5px); transition: opacity 1.2s ease-out, transform 1.2s ease-out, filter 1.2s ease-out; transition-delay: var(--d, 0s); }
+.on .r { opacity: 1; transform: none; filter: none; }
+
+/* полный текст главы */
+.chapter { background: var(--bg2); border-top: 1px solid rgba(227,167,129,0.18); border-bottom: 1px solid rgba(227,167,129,0.18); }
+.chapter details { max-width: 760px; margin: 0 auto; padding: 22px 6vw; }
+.chapter summary { cursor: pointer; list-style: none; font-family: 'Caveat', cursive; font-size: 26px; color: var(--accent); display: flex; align-items: center; gap: 10px; }
+.chapter summary::-webkit-details-marker { display: none; }
+.chapter summary::before { content: '+'; font-family: 'Lora', serif; font-size: 22px; width: 28px; height: 28px; border: 1px solid var(--line); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; transition: transform .3s; }
+.chapter details[open] summary::before { transform: rotate(45deg); }
+.chapter .text { padding: 14px 0 26px; font-size: 19px; line-height: 1.75; color: #E8DDC9; }
+.chapter .text p { margin: 0 0 1em; }
+.chapter .text h3 { font-size: 30px; margin: 1.2em 0 .5em; color: var(--text); }
+
+/* источники */
+.sources { padding: 14vh 6vw 10vh; max-width: 1100px; margin: 0 auto; }
+.sources h2 { font-size: clamp(40px, 5vw, 64px); margin-bottom: 26px; }
+.sources ul { list-style: none; padding: 0; margin: 0; }
+.sources li { padding: 12px 0; border-bottom: 1px solid rgba(227,167,129,0.15); color: var(--soft); }
+.sources li b { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 24px; font-weight: 600; color: var(--text); margin-right: 8px; }
+.colophon { margin-top: 48px; color: var(--muted); font-size: 15px; }
+.colophon b { color: var(--text); font-weight: 600; }
+
+/* панель заметки */
+#overlay { position: fixed; inset: 0; background: rgba(8,6,5,0.55); opacity: 0; pointer-events: none; transition: opacity .35s; z-index: 60; }
+#overlay.open { opacity: 1; pointer-events: auto; }
+#drawer { position: fixed; top: 0; right: 0; height: 100%; width: min(600px, 100vw); background: var(--paper); color: var(--paper-ink); z-index: 70; transform: translateX(102%); transition: transform .45s cubic-bezier(.2,.7,.2,1); display: flex; flex-direction: column; box-shadow: -20px 0 60px rgba(0,0,0,0.45); }
+#drawer.open { transform: none; }
+#drawer header { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 14px 18px; border-bottom: 1px solid #D8C9B0; }
+#drawer header .lbl { font-family: 'Caveat', cursive; font-size: 24px; color: var(--rust); }
+#drawer header .btns { display: flex; gap: 6px; }
+#drawer header button { background: none; border: 1px solid #D8C9B0; border-radius: 50%; width: 38px; height: 38px; cursor: pointer; color: var(--paper-ink); font-size: 18px; }
+#drawer header button:hover { background: #E8DDC9; }
+#drawer header button[hidden] { display: none; }
+#drawer .body { overflow-y: auto; padding: 22px 30px 60px; -webkit-overflow-scrolling: touch; }
+#drawer h2.ntitle { font-size: 34px; line-height: 1.15; font-weight: 600; margin: 0 0 18px; color: var(--paper-ink); }
+#drawer .md { font-size: 17px; line-height: 1.7; color: var(--paper-soft); }
+#drawer .md p, #drawer .md ul, #drawer .md ol, #drawer .md blockquote { margin: 0 0 1em; }
+#drawer .md h1, #drawer .md h2, #drawer .md h3, #drawer .md h4 { font-family: 'Cormorant Garamond', Georgia, serif; color: var(--paper-ink); line-height: 1.2; margin: 1.3em 0 .5em; }
+#drawer .md h1 { font-size: 30px; } #drawer .md h2 { font-size: 27px; } #drawer .md h3 { font-size: 23px; } #drawer .md h4 { font-size: 20px; }
+#drawer .md strong { color: var(--paper-ink); }
+#drawer .md blockquote { border-left: 3px solid var(--rust); padding-left: 14px; font-style: italic; }
+#drawer .md mark { background: #EBCFB8; color: inherit; padding: 0 2px; }
+#drawer .md .src { font-size: 14px; color: #6B5C51; font-style: italic; }
+#drawer .md table { border-collapse: collapse; font-size: 15px; margin: 0 0 1em; }
+#drawer .md th, #drawer .md td { border: 1px solid #D8C9B0; padding: 6px 8px; text-align: left; }
+#drawer a.note { text-decoration-color: var(--rust); }
+#drawer a.note::after { color: var(--rust); }
+#drawer a.note:hover { color: var(--rust); }
+
+.scroll-cue { margin-top: 34px; font-size: 14px; letter-spacing: 3px; text-transform: uppercase; color: var(--soft); animation: bob 2.4s ease-in-out infinite; }
+@keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(6px); } }
+
+@media (max-width: 760px) {
+  .topbar span:last-child { display: none; }
+  .diptych { grid-template-columns: 1fr; }
+  .diptych .half { min-height: 80vh; }
+  .steps { flex-direction: column; }
+  .steps .arrow { transform: rotate(90deg); }
+  .storyboard .caps { grid-template-columns: repeat(2, 1fr); row-gap: 14px; }
+  .content { padding-bottom: 9vh; }
+  #drawer .body { padding: 18px 20px 60px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .scene .bg, .r, .storyboard .strip img { transition: none !important; transform: none !important; filter: none !important; opacity: 1 !important; }
+  .scroll-cue { animation: none; }
+  html { scroll-behavior: auto; }
+}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<div class="topbar" id="topbar"><span>Творчество к смерти</span><span id="chapterName"></span></div>
+
+<!-- Обложка -->
+<section class="scene top-text" data-chapter="">
+  <img class="bg" src="img/01-cover.webp" alt="Ночь. Бледный юноша стоит спиной на холме над городом, к нему тянутся цветные струи запахов">
+  <div class="veil top"></div>
+  <div class="content center">
+    <p class="eyebrow r">доклад по роману Патрика Зюскинда «Парфюмер»</p>
+    <h1 class="r" style="--d:.3s">Творчество к смерти</h1>
+    <p class="sub r" style="--d:.6s">Жан-Батист Гренуй и мир частичных объектов</p>
+    <p class="author r" style="--d:.9s">Конягина Анастасия · декабрь 2026</p>
+    <p class="scroll-cue r" style="--d:1.4s">листайте вниз ↓</p>
+  </div>
+</section>
+
+<!-- Пролог -->
+<div class="diptych scene" data-chapter="Пролог">
+  <div class="half">
+    <img class="bg" src="img/02-market.webp" alt="Рыбный рынок, под прилавком среди рыбы кричит младенец, торговки оборачиваются">
+    <div class="veil"></div>
+    <div class="content">
+      <p class="year r">1738</p>
+      <h3 class="r" style="--d:.3s; font-size:clamp(22px,2.3vw,36px)">Рыбный ряд у кладбища Невинных</h3>
+      <p class="punch r" style="--d:.6s">Против любви, но за жизнь</p>
+    </div>
+  </div>
+  <div class="half">
+    <img class="bg" src="img/03-fire.webp" alt="Ночное кладбище, круг бродяг у костра с восторженными лицами" style="transition-delay:.5s">
+    <div class="veil"></div>
+    <div class="content">
+      <p class="year r" style="--d:.8s">1767</p>
+      <h3 class="r" style="--d:1.1s; font-size:clamp(22px,2.3vw,36px)">То же кладбище, ночь</h3>
+      <p class="punch r" style="--d:1.4s">За любовь, но против жизни</p>
+    </div>
+  </div>
+</div>
+
+<section class="scene" data-chapter="Пролог">
+  <img class="bg" src="img/04-flask.webp" alt="Рука в полутьме поднимает к свече светящийся янтарём флакон">
+  <div class="veil"></div>
+  <div class="content">
+    <p class="quote r" style="max-width:1100px">Можно ли назвать творчеством то, что от первого до последнего шага идёт к смерти?</p>
+  </div>
+</section>
+
+<div class="chapter"><details><summary>Пролог целиком</summary><div class="text" data-text="prolog"></div></details></div>
+
+<!-- I -->
+<section class="scene" data-chapter="I. Чем живо живое">
+  <img class="bg" src="img/05-baldini.webp" alt="Лавка парфюмера: юный Гренуй смешивает духи на глаз, старый Бальдини смотрит поражённо">
+  <div class="veil deep"></div>
+  <div class="content">
+    <p class="eyebrow r">I. Чем живо живое</p>
+    <p class="quote r" style="--d:.2s">Повторение становится творчеством, когда его кто-то принимает</p>
+    <p class="cite r" style="--d:.4s">Фрейд, 1914: перенос — «промежуточное царство между болезнью и жизнью»</p>
+    <div class="steps r" style="--d:.7s">
+      <div class="card"><h3>Повторение</h3><p>старая пьеса, которую играем, не помня текста</p></div>
+      <span class="arrow">→</span>
+      <div class="card"><h3>Другой принимает</h3><p>и не играет по старым нотам</p></div>
+      <span class="arrow">→</span>
+      <div class="card"><h3><a class="note" data-note="Игра и переходное пространство">Игра</a></h3><p>терапия там, где встречаются две игры (Винникотт)</p></div>
+      <span class="arrow">→</span>
+      <div class="card"><h3><a class="note" data-note="интернализация как усиление когерентности психики (Лёвальд)">Творчество</a></h3><p>призраки становятся предками (Лёвальд)</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="scene" data-chapter="I. Чем живо живое">
+  <img class="bg" src="img/06-bourgeois.webp" alt="Мастерская скульптора: пожилая женщина в фартуке выправляет ногу огромного металлического паука">
+  <div class="veil"></div>
+  <div class="content">
+    <p class="quote r">«Искусство — гарантия душевного здоровья»</p>
+    <p class="punch r" style="--d:.3s">— Луиза Буржуа*. <a class="note" data-note='Роль "достаточно хорошей матери" для формирования способности к творчеству'>Живое произведение — это обращение</a>.</p>
+    <p class="foot r" style="--d:.6s">* Луиза Буржуа (1911–2010) — французско-американская художница и скульптор, автор гигантских пауков «Маман» и «Клеток». Её отец годами жил в доме с любовницей — гувернанткой детей; эту детскую рану Буржуа всю жизнь переплавляла в искусство. На иллюстрации — образ, а не портрет.</p>
+  </div>
+</section>
+
+<div class="chapter"><details><summary>Глава I целиком</summary><div class="text" data-text="I"></div></details></div>
+
+<!-- II -->
+<section class="scene" data-chapter="II. Ребёнок, который не пахнет">
+  <img class="bg" src="img/07-nurse.webp" alt="Кормилица на вытянутых руках отдаёт младенца, монах в дверях принюхивается">
+  <div class="veil"></div>
+  <div class="content">
+    <p class="eyebrow r">II. Ребёнок, который не пахнет</p>
+    <p class="quote r" style="--d:.2s"><a class="note" data-note="лицо матери как зеркало у Винникотта">«Когда я смотрю, меня видят, значит, я существую»</a></p>
+    <p class="cite r" style="--d:.4s">Винникотт, 1967</p>
+    <p class="punch r" style="--d:.7s">Гренуй не пахнет. Первое узнавание не состоялось.</p>
+  </div>
+</section>
+
+<section class="scene storyboard" data-chapter="II. Ребёнок, который не пахнет">
+  <div class="strip"><img src="img/08-storyboard.webp" alt="Четыре кадра: мадам Гайяр считает монеты, Гренуй в дубильне, Бальдини пишет рецепт, маркиз показывает аппарат гостям"></div>
+  <div class="caps r" style="--d:.4s">
+    <div><h3>Мадам Гайяр</h3><p>деньги</p></div>
+    <div><h3>Грималь, дубильщик</h3><p>рабочие руки</p></div>
+    <div><h3>Бальдини, парфюмер</h3><p>рецепты</p></div>
+    <div><h3>Маркиз</h3><p>доказательство теории</p></div>
+  </div>
+  <p class="punch center r" style="--d:.8s; margin-top:30px"><a class="note" data-note="Отсутствие объектного катексиса — почему внимание не удерживается (Кохут)">Его использовали, но не любили.</a></p>
+</section>
+
+<section class="scene" data-chapter="II. Ребёнок, который не пахнет">
+  <img class="bg" src="img/09-plums.webp" alt="Рыжая девушка чистит сливы, от неё тянется золотой шлейф аромата; из-под арки к шлейфу тянется бледный Гренуй">
+  <div class="veil"></div>
+  <div class="content">
+    <p class="quote r" style="max-width:1100px">Гренуя никто не видел целым — и он не видит целым никого.</p>
+  </div>
+</section>
+
+<section class="scene" data-chapter="II. Ребёнок, который не пахнет" style="align-items:center">
+  <img class="bg" src="img/09-plums.webp" alt="" style="opacity:.14">
+  <div class="content" style="padding-top:12vh">
+    <p class="eyebrow r">II. Мир частичных объектов</p>
+    <p class="quote r" style="--d:.2s"><a class="note" data-note="частичные объекты">Грудь вместо матери, запах вместо девушки</a></p>
+    <div class="cards r" style="--d:.5s">
+      <div class="card"><p class="tag">у Мелани Кляйн</p><h3>Младенец</h3><p>Сначала знает не мать, а грудь. Целого человека, которого можно любить и потерять, открывает позже.</p></div>
+      <div class="card"><p class="tag">в романе</p><h3>Гренуй</h3><p>Так и остаётся у груди. Ему нужна не девушка, а её запах.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="scene" data-chapter="II. Ребёнок, который не пахнет">
+  <img class="bg" src="img/10-bridge.webp" alt="Ночь над Сеной: Гренуй уходит с узелком, за ним дом на мосту рушится в реку">
+  <div class="veil deep"></div>
+  <div class="content">
+    <p class="quote r">Другой становится настоящим, когда выживает</p>
+    <p class="cite r" style="--d:.3s">Винникотт, «Использование объекта», 1969</p>
+    <div class="steps r" style="--d:.6s">
+      <div class="card"><h3>Разрушаю</h3><p>в фантазии, в ярости, в нападении</p></div>
+      <span class="arrow">→</span>
+      <div class="card"><h3>Выживает</h3><p>не погибает и не мстит</p></div>
+      <span class="arrow">→</span>
+      <div class="card"><h3>Становится реальным</h3><p>внешним, отдельным, другим</p></div>
+    </div>
+    <p class="punch r" style="--d:.9s">В мире Гренуя не выживает никто.</p>
+  </div>
+</section>
+
+<div class="chapter"><details><summary>Глава II целиком</summary><div class="text" data-text="II"></div></details></div>
+
+<!-- III -->
+<section class="scene" data-chapter="III. Язык, которого нет">
+  <img class="bg" src="img/11-boy.webp" alt="Маленький Гренуй сидит на полу с закрытыми глазами и нюхает щепку, вокруг цветные облака запахов, рядом раскрытая пустая книга">
+  <div class="veil"></div>
+  <div class="content">
+    <p class="eyebrow r">III. Язык, которого нет</p>
+    <div class="ghosts r" style="--d:.2s"><span>совесть</span><span>Бог</span><span>радость</span></div>
+    <p class="cite r" style="--d:.4s">— слова, которые Гренуй понимает с трудом: у них нет запаха</p>
+    <p class="punch r" style="--d:.7s"><a class="note" data-note="До-символические формы символизации">Опыт, для которого нет языка, некому воспринять.</a></p>
+  </div>
+</section>
+
+<section class="scene" data-chapter="III. Язык, которого нет">
+  <img class="bg" src="img/12-cave.webp" alt="Тёмная пещера: худой человек в лохмотьях спит на камнях, его окутывает бледный перламутровый туман">
+  <div class="veil"></div>
+  <div class="content">
+    <p class="quote r" style="max-width:1200px">Не «во мне ничего нет», а «меня никто не воспринял — и я не могу воспринять себя»</p>
+    <p class="cite r" style="--d:.4s">Бион: непринятое возвращается <a class="note" data-note="Связывание-контейнирование-мышление">«безымянным ужасом»</a></p>
+  </div>
+</section>
+
+<div class="chapter"><details><summary>Глава III целиком</summary><div class="text" data-text="III"></div></details></div>
+
+<!-- IV -->
+<section class="scene top-text" data-chapter="IV. Духи, которые отменяют другого">
+  <img class="bg" src="img/13-workshop.webp" alt="Мастерская ночью: руки раскладывают цветы жасмина на стеклянные рамы, ряд пустых пузырьков и один светящийся янтарём флакон">
+  <div class="veil top"></div>
+  <div class="content center">
+    <p class="big r" style="--d:.3s">Двадцать пять девушек.</p>
+    <p class="big r" style="--d:1.3s">Двадцать пять убийств.</p>
+    <p class="big r" style="--d:2.3s">Один флакон.</p>
+  </div>
+</section>
+
+<section class="scene" data-chapter="IV. Духи, которые отменяют другого">
+  <img class="bg" src="img/14-morning.webp" alt="Пустая площадь на рассвете: брошенный помост, опрокинутые скамьи, ленты, шали, туфля">
+  <div class="veil deep"></div>
+  <div class="content">
+    <p class="quote r">А наутро — стыд, молчание и забвение</p>
+    <div class="cards r" style="--d:.4s">
+      <div class="card"><h3><a class="note" data-note="Гипноз как влюблённость при исключении сексуального удовлетворения (Фрейд, 1921, Групповая психология)">Захват, а не опыт</a></h3><p>чужой образ встаёт на место твоего идеала</p><p class="small">Фрейд, 1921</p></div>
+      <div class="card"><h3>Ложное творение</h3><p>двадцать пять жизней — один запах</p><p class="small">Шассге-Смиргель, 1984</p></div>
+      <div class="card"><h3><a class="note" data-note="Зависть в аналитическом процессе">Жадность без благодарности</a></h3><p>вычерпанное — не дар, а оружие</p><p class="small">Кляйн, 1957</p></div>
+    </div>
+  </div>
+</section>
+
+<div class="chapter"><details><summary>Глава IV целиком</summary><div class="text" data-text="IV"></div></details></div>
+
+<!-- V -->
+<section class="scene" data-chapter="V. Духи, которые отменяют автора">
+  <img class="bg" src="img/15-mountain.webp" alt="Гора в разрезе: слои красной и охристой породы складываются в тёплую полость-утробу, в глубине свернулась маленькая фигура">
+  <div class="veil"></div>
+  <div class="content">
+    <div class="cards r">
+      <div class="card"><h3><a class="note" data-note="Область созидания — третий уровень психики без внешнего объекта (Балинт)">Пещера</a></h3><p>семь лет внутри горы — почти буквальная утроба</p><p class="small">Ференци, «Таласса», 1924</p></div>
+      <div class="card"><h3><a class="note" data-note="Символическое уравнивание">Трапеза</a></h3><p>где не родился символ, «быть принятым» — значит «быть съеденным»</p><p class="small">Сегал, 1957</p></div>
+    </div>
+    <p class="quote center r" style="--d:.5s; margin-top:30px"><a class="note" data-note="Интроекция и инкорпорация — работа символа против магии (Абрахам и Торок)">Его вобрали. Но вобрали только запах.</a></p>
+  </div>
+</section>
+
+<div class="chapter"><details><summary>Глава V целиком</summary><div class="text" data-text="V"></div></details></div>
+
+<!-- VI -->
+<section class="scene" data-chapter="VI. Так творчество ли это?">
+  <img class="bg" src="img/16-scaffold.webp" alt="Площадь в Грасе: толпа в экстазе тянет руки к эшафоту, на котором неподвижно стоит бледный Гренуй, окутанный золотой дымкой">
+  <div class="veil blood"></div>
+  <div class="content center">
+    <p class="eyebrow r">VI. Так творчество ли это?</p>
+    <p class="quote r" style="--d:.2s"><a class="note" data-note="Сублимация — карта области (Фрейд)">Та же сила, что движет любым художником, — но обращённая против субъекта</a></p>
+    <div class="cards r" style="--d:.6s; text-align:left; max-width:1100px; margin-left:auto; margin-right:auto">
+      <div class="card"><h3>Творчество к жизни</h3><p>оставляет другому свободу ответить и меняет обоих</p></div>
+      <div class="card"><h3>Творчество к смерти</h3><p>отменяет и другого, и самого автора</p></div>
+    </div>
+  </div>
+</section>
+
+<div class="chapter"><details><summary>Глава VI целиком</summary><div class="text" data-text="VI"></div></details></div>
+
+<!-- Эпилог -->
+<section class="scene" data-chapter="Эпилог">
+  <img class="bg" src="img/17-office.webp" alt="Вечерний кабинет аналитика: два кресла, лампа, книги, кушетка; между креслами едва заметная дымка">
+  <div class="veil deep"></div>
+  <div class="content">
+    <p class="eyebrow r">Эпилог</p>
+    <p class="quote r" style="--d:.2s"><a class="note" data-note="Когда кажется, что переноса в работе нет — карта темы">Пациент без запаха</a></p>
+    <div class="chips r" style="--d:.4s"><span class="chip">сонливость</span><span class="chip">пустота</span><span class="chip">растерянность</span></div>
+    <div class="cards r" style="--d:.6s">
+      <div class="card"><p><a class="note" data-note="Не отсутствие переноса, а трудность его распознать (Розенфельд, 1952)">Перенос не отсутствует — его трудно распознать.</a></p><p class="small">Розенфельд, 1952</p></div>
+      <div class="card"><p><a class="note" data-note="Холдинг и страх падения — Винникотт">Катастрофа уже случилась — но рядом не было никого, кто помог бы её пережить.</a></p><p class="small">Винникотт, «Страх распада», 1974</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="scene top-text" data-chapter="Эпилог">
+  <img class="bg" src="img/18-dawn.webp" alt="Старое парижское кладбище на рассвете: погасший костёр, тонкая струйка дыма, на земле пустой флакон">
+  <div class="veil top"></div>
+  <div class="content center">
+    <p class="r" style="font-size:clamp(18px,1.8vw,26px)">Гренуй ни к кому не пришёл. Пациент — пришёл, и это уже обращение.</p>
+    <p class="quote r" style="--d:.5s; margin-top:14px">Наша работа — учуять того, кто сам себя не чует.</p>
+  </div>
+</section>
+
+<div class="chapter"><details><summary>Эпилог целиком</summary><div class="text" data-text="epilogue"></div></details></div>
+
+<!-- Источники -->
+<section class="sources scene" data-chapter="Источники" style="min-height:auto; display:block">
+  <h2 class="r">Источники</h2>
+  <ul class="r" style="--d:.2s">
+    <li><b>Патрик Зюскинд</b> «Парфюмер. История одного убийцы», 1985, пер. Э. Венгеровой</li>
+    <li><b>Зигмунд Фрейд</b> «Писатель и фантазирование», 1908 · «Воспоминание, повторение и переработка», 1914 · «Психология масс и анализ человеческого Я», 1921</li>
+    <li><b>Мелани Кляйн</b> «К психогенезу маниакально-депрессивных состояний», 1935 · «Заметки о некоторых шизоидных механизмах», 1946 · «Зависть и благодарность», 1957</li>
+    <li><b>Дональд Винникотт</b> «Зеркальная роль матери и семьи», 1967 · «Использование объекта», 1969 · «Игра и реальность», 1971 · «Страх распада», 1974</li>
+    <li><b>Уилфред Бион</b> «Теория мышления», 1962 · «Научение через опыт», 1962</li>
+    <li><b>Ханна Сегал</b> «Психоаналитический подход к эстетике», 1952 · «Заметки о символообразовании», 1957</li>
+    <li><b>Шандор Ференци</b> «Таласса», 1924</li>
+    <li><b>Ханс Лёвальд</b> «О терапевтическом действии психоанализа», 1960</li>
+    <li><b>Герберт Розенфельд</b> перенос при острой кататонической шизофрении, 1952</li>
+    <li><b>Жанин Шассге-Смиргель</b> «Творчество и перверсия», 1984</li>
+    <li><b>Эрнст Крис</b> «Психоаналитические исследования искусства», 1952</li>
+    <li><b>Луиза Буржуа</b> «Искусство — гарантия душевного здоровья»</li>
+  </ul>
+  <p class="colophon r" style="--d:.4s"><b>Конягина Анастасия</b> · декабрь 2026<br>Подчёркнутые слова° открывают заметки из рабочей базы автора. Иллюстрации созданы нейросетью.</p>
+</section>
+
+<div id="overlay"></div>
+<aside id="drawer" aria-hidden="true" aria-label="Заметка">
+  <header><span class="lbl">заметка из базы</span><span class="btns"><button id="backBtn" title="Назад" hidden>←</button><button id="closeBtn" title="Закрыть">✕</button></span></header>
+  <div class="body" id="drawerBody"></div>
+</aside>
+
+<script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+<script>
+const NOTES = {"Игра и переходное пространство": "Руссийон, 2011\nВ статье Руссийон **прямо говорит об игре** как об одной из фундаментальных форм **первичной символизации**, наряду с работой сновидения. Игра описывается как процесс, в котором первичная психическая материя может быть трансформирована, представлена и переработана **до речи**, в формах сцен, образов и процессуальных конфигураций. Через игру становится возможной первая интеграция опыта, не сводимая ни к действию, ни к восприятию.\nПри этом **термин «переходное пространство» не используется**. Руссийон не вводит винникоттовскую концепцию напрямую. Однако логика переходного пространства **имплицитно присутствует**: он говорит о необходимости **присутствия объекта**, о функциях окружения, о **разделяемости опыта** и о том, что символизация возникает на пересечении субъекта и объекта, в зоне, где ещё не проведено чёткое различие между внутренним и внешним.\n\n→ Роль и функция творчества в аналитическом кабинете по Винникотту — та же связка игры и переходного пространства, но у самого Винникотта", "интернализация как усиление когерентности психики (Лёвальд)": "Пайнс разбирает, как Ханс Лёвальд использует принцип когерентности, введённый Фрейдом (различение когерентного Эго и вытесненного), чтобы выстроить теорию интернализации. У Лёвальда три тезиса: то, что интернализуется, становится неотъемлемой частью когерентного Эго; то, что вытесняется, отщепляется от когерентного Эго; Супер-Эго — это дальнейшая дифференциация того же когерентного Эго. Отсюда важное методологическое требование Лёвальда: нужно чётче, чем это делал сам Фрейд, различать процессы вытеснения и процессы интернализации — последние создают и наращивают когерентную интеграцию психики как целого, тогда как вытеснение, напротив, работает против такой организации, удерживая часть психических процессов в менее упорядоченном, более примитивном состоянии.\n\nПсихическое развитие, по Лёвальду, происходит в силовом поле взаимодействия — полярности, где мать представляет более организованный полюс, а ребёнок — менее организованный. В ходе развития ребёнок постепенно перенимает и усваивает черты более организованного полюса — матери; там, где было «другое», встаёт «self», или Эго. Механизм этого процесса — интернализация: мать организует относительно нескоординированные побуждения младенца, и через их взаимную отзывчивость ребёнок интроецирует не просто объект, а сам паттерн отклика заботящегося человека — то есть интернализируется сам процесс взаимодействия, а не отдельный объект.\n\nЛёвальд не постулирует изначально существующий отдельный психический аппарат — вместо этого он говорит об исходном психическом поле или матрице, внутри которой начинаются процессы индивидуации (в этом его отличие от поздней модели Кохута, предполагающей целостность психики с самого начала). Влечения при этом понимаются не как однонаправленные импульсы, исходящие от младенца, а как дифференцирующие и интегрирующие процессы внутри самой психической матрицы мать—дитя — то есть влечения никогда не теряют характер отношенческого феномена. Родитель вносит смысл и когерентность более высокого уровня организации в менее организованную психику младенца через процессы и паттерны взаимодействия — этот же принцип Лёвальд распространяет на аналитическую ситуацию: то, что внешняя реальность (в том числе аналитик) предлагает индивиду, — это именно движение к более высокой организации и смыслу.\n\n<p class=\"src\">Источник: Pines, Circular Reflections<\/p>\n\n**Связанные заметки:** Пайнс — когерентное бессознательное у Фрейда как модель терапевтического изменения, исцеление и излечение, когерентность и связность", "Роль \"достаточно хорошей матери\" для формирования способности к творчеству": "Винникотт утверждает, что творчество важно для конструирования смысла жизни и развития личности. Он подчеркивает, что недостаток поддержки (\"достаточно хорошей матери\") в детстве может препятствовать развитию творческого потенциала. Аналитик должен помочь создать безопасное пространство для клиента, где можно развивать творческие способности.\n\n<p class=\"src\">Источник: Nachträglichkeit и психоаналитическая креативность<\/p>\n\n**Связанные заметки (Талеб):** сверхзаботливая мать подавляет антихрупкость ребёнка", "лицо матери как зеркало у Винникотта": "Центральная опора концепции зеркала у Пайнса — короткая, но программная работа Винникотта «Зеркальная роль матери и семьи в развитии ребёнка» (1971). Пайнс встраивает её в общую логику Винникотта о холдинге, обращении с ребёнком (handling) и предъявлении объекта: если младенец достаточно хорошо удержан и обихожен, в какой-то момент он начинает смотреть не столько на грудь, сколько на лицо матери.\n\nКлючевой вопрос Винникотта: что видит младенец, когда смотрит на лицо матери? Ответ: обычно — самого себя. Мать смотрит на ребёнка, и то, как выглядит её лицо, связано с тем, что она в нём видит. Если она смотрит с любовью и нежностью, ребёнок переживает себя живым и радостным. Если же мать в депрессии, не улыбается и, тем более, не может поддерживать ответный взгляд — ребёнок переживает себя безрадостным, неживым, как бы отсутствующим. В этом случае лицо матери перестаёт быть зеркалом: восприятие подменяет собой апперцепцию, обмен смыслом с миром не складывается. Такой ребёнок, повзрослев, будет озадачен обычными зеркалами — предметом, на который смотрят, но в который не всматриваются.\n\nПайнс приводит вслед за Дэвидом Шарффом идею о том, что из этого взаимного обмена взглядами в младенчестве выстраивается целая линия развития — вплоть до взрослой сексуальной и эмоциональной жизни: поцелуй, улыбка, физическая забота и близость в паре взрослых уходят корнями в разделённый взгляд, прикосновение и «разговоры» младенца с матерью. Сбои зеркалирования в младенчестве, ведущие к проблемам ложного self, затрудняют затем воссоздание зеркального опыта во взрослой сексуальной жизни.\n\nОтдельно Пайнс выделяет формулу Винникотта о психотерапии, которую считает подтверждённой собственным клиническим опытом работы с нарциссически повреждёнными пациентами: терапия — это по большей части не умные и меткие интерпретации, а долгий процесс возвращения пациенту того, что пациент сам приносит. Это прямо перекликается с идеей Кохута о зеркальном селфобъекте и с групповым феноменом зеркала: и терапевт, и группа выполняют функцию «лица», в котором участник впервые ясно видит себя.\n\n<p class=\"src\">Источник: Pines, Circular Reflections<\/p>\n**Связанные заметки:** Концепция промежуточной зоны по Винникотту, Клинический пример — феномен зеркала группы, биологическое зеркалирование в раннем взаимодействии мать-младенец", "Отсутствие объектного катексиса — почему внимание не удерживается (Кохут)": "Кохут объясняет скуку через метапсихологию внимания. Подлинная бдительность при долгом наблюдении держится только на глубокой вовлечённости наблюдателя. Направленные на объект стремления, как правило, вызывают эмоциональную реакцию у того, на кого направлены, — поэтому даже когда аналитик в полной растерянности относительно смысла сказанного, наблюдение за объектно-инстинктивными проявлениями переноса обычно не наводит на него скуку.\n\nМатериал же нарциссических пациентов не затрагивает бессознательной настроенности аналитика так, как ассоциации при неврозах переноса. **Когда грандиозная самость активируется в форме слияния с психическими репрезентантами аналитика, объектного катексиса не существует вовсе**, и привязанность пациента носит специфически архаичный характер.\n\nВнимание при этом ещё активируется когнитивной задачей — понять загадочные проявления архаичных нарциссических отношений, — и аналитик может чувствовать себя угнетённым очевидными, хотя и невысказанными требованиями, которые с точки зрения цели слияния равносильны полному порабощению. Но отсутствия объектно-инстинктивных катексисов это не отменяет, и потому долго оставаться по-настоящему внимательным ему часто не удаётся.\n\n<p class=\"src\">Источник: Кохут, Анализ самости (1971)<\/p>\n\n## Связанные заметки\n\n→ Скука аналитика как главная опасность переноса-слияния и близнецового (Кохут)\n→ Зеркальный перенос удерживает внимание, слияние — нет (Кохут)\n→ Невнимательность здесь — свойство ситуации, а не контрперенос (Кохут)\n→ селфобъект и зеркальный перенос у Кохута", "частичные объекты": "Частичный объект — это прежде всего **функция**, а не «предмет»\n\nконцепция бессознательной фантазии\nсодержание бессознательных фантазий всегда в конечном счете можно проследить до мыслей и чувств о функционировании и содержимом собственного тела по отношению к функционированию и содержимому тела другого человека\n\nВ статье _«Заметки о некоторых шизоидных механизмах»_ (1946) Кляйн не даёт формального определения термина _частичный объект_ (как, скажем, в словаре), но чётко и последовательно описывает, **что она имеет в виду под ним**, и как он функционирует в психике младенца.\n\n---\n\n### 📘 **Определение частичного объекта по Кляйн (по статье 1946 г.):**\n\n**Частичный объект** — это **фрагмент объекта, воспринимаемый младенцем не как целое существо, а как функция удовлетворения или фрустрации**, например, «хорошая грудь» или «плохая грудь». Частичные объекты возникают как результат **расщепления** восприятия и фантазии, направленной на управление тревогой.\n\nЧастичный объект:\n\n- **не целостен** (не воспринимается как мать в целом),\n    \n- **заряжен аффектом** (либо исключительно хороший, либо исключительно плохой),\n    \n- **служит контейнером проекции и интроекции**,\n    \n- **формируется в рамках параноидно-шизоидной позиции**.\n    \n\n---\n\n### 📌 Цитата из статьи:\n\n> **«Я часто высказывала мнение, что объектные отношения существуют с самого начала жизни; первым объектом является грудь матери, которая в восприятии ребёнка расщепляется на хорошую (удовлетворяющую) и плохую (фрустрирующую) грудь; это расщепление приводит к разделению любви и ненависти».**\n\n(Раздел _Введение_, в первых абзацах статьи.)\n\n---\n\nЭта цитата показывает:\n\n- объект в начале — **часть тела**, не целое существо;\n    \n- его восприятие **расщеплено**, и это **эмоционально значимо**;\n    \n- именно это восприятие становится **фундаментом ранних объектных отношений**.", "До-символические формы символизации": "По Руссийон, 2011\n\n**До-символические формы** — это первичные процессуальные формы психического, возникающие до репрезентации и символа. Они относятся к уровню **первичной психической материи**, не несут значения и не являются образом или мыслью, а выражают **форму процесса** (движение, трансформацию, изменение состояния) и склонны к повторению при отсутствии метаболизации.", "Связывание-контейнирование-мышление": "Проективная идентификация позволяет Биону сформулировать модель «контейнер — контейнируемое»: контейнируемое может разрывать контейнер, либо, наоборот, сдавливаться и удушаться контейнером, либо между ними происходит взаимная адаптация. Согласно этой модели, младенец проецирует часть своего психического мира — неконтролируемые эмоции (контейнируемое) — в хорошую грудь-контейнер, чтобы получить их обратно «дезинтоксицированными», в более переносимом виде. Так механизм проективной идентификации запускается оральными отношениями рта и груди.\n\nУстойчивость патологической проективной идентификации лежит в основании нарушений мышления. Непереносимость фрустраций ведёт к включению этого механизма: ответом на фрустрацию могло бы быть производство α-элементов (представление вещи-в-себе), но вместо этого производятся β-элементы, неотличимые от вещей-в-себе. При этом проективная идентификация в норме лежит в основании самой способности мыслить — она «прописывает мысль до мысли».\n\nТаким образом связывание (через проективную идентификацию), контейнирование (модель «контейнер — контейнируемое») и мышление (производство α-элементов) у Биона оказываются связаны одной линией: контейнирование эмоций — это то, через что непереваренное (β-элементы) может быть переработано в мысль.\n\n<p class=\"src\">Источник: Аппарат мышления<\/p>\n\n**Связанные заметки:** Мышление, Мысли, Аппарат мышления, Проективная идентификация, стрессоры как информация", "Гипноз как влюблённость при исключении сексуального удовлетворения (Фрейд, 1921, Групповая психология)": "<p class=\"src\">Источник: Групповая психология и анализ Я — конспект, Фрейд, 1921 (Глава VIII, «Влюблённость и гипноз»)<\/p>\n\n**Тезис.** От влюблённости до гипноза, очевидно, недалеко: **гипнотизёр встал на место Я-идеала**.\n\n**Аргументы.** Совпадения обоих состояний бросаются в глаза: та же смиренная покорность, уступчивость, некритичность к гипнотизёру, что и к любимому объекту; то же всасывание собственной инициативы. В гипнозе все отношения только отчётливее и усиленнее, так что целесообразнее было бы пояснять влюблённость через гипноз, а не наоборот. Гипнотизёр — единственный объект, никакой другой рядом с ним не замечается. То, что Я как во сне переживает требуемое и утверждаемое им, напоминает нам: среди функций Я-идеала мы упустили назвать ещё и **осуществление проверки реальности** (отсылка к «Метапсихологическому дополнению к теории сновидений», 1917). Неудивительно, что Я считает восприятие реальным, если психическая инстанция, обычно ведающая проверкой реальности, сама выступает за эту реальность. Полное отсутствие стремлений с незаторможенными сексуальными целями добавляет явлениям крайней чистоты: **гипнотическое отношение есть неограниченная влюблённая отдача при исключении сексуального удовлетворения**, тогда как при влюблённости оно лишь временно отодвинуто и остаётся в фоне как позднейшая возможность цели.\n\n**Вывод.** Гипноз — не аналогия влюблённости, а её очищенный от чувственности случай; и именно поэтому он даёт чистый препарат того отношения, которое связывает члена массы с вождём.\n\n→ Галлюцинация требует отключения проверки реальности (Фрейд, 1917) (та работа 1917 г., на которую Фрейд здесь ссылается за понятием проверки реальности)\n→ Гипноз есть массообразование вдвоём (Фрейд, 1921, Групповая психология)", "Зависть в аналитическом процессе": "Зависть — сквозная тема клинических примеров Биона: пациент завидует не только конкретным качествам аналитика, но самой возможности пары (пациент-аналитик) создавать нечто ценное — понимание, облегчение, смысл.\n\n- В примере с «двумя облаками вероятности» пациент боится, что зависть и ненависть к способности аналитика понимать заставят его принять в себя хороший, понимающий объект лишь для того, чтобы разрушить и вытеснить его; это порождает чувство преследования со стороны уже разрушенного и изгнанного объекта.\n- В примере с «голубой дымкой» переживание понятости — потенциально положительная связь — встречается ненавистью и трансформируется в нечто враждебное и разрушительное, обесценивая саму связь между пациентом и аналитиком.\n- В примере с «куском железа» зависть направлена на союз пациента и аналитика как таковой — на то, что вместе они способны вести работу, приносящую облегчение; эта зависть приводит к омертвению самой аналитической пары.\n- Согласно Биону, если объект (аналитик) выдерживает проекции пациента, не разрушаясь, зависть не исчезает, а переключается на саму эту способность оставаться спокойным контейнером.\n\n<p class=\"src\">Источник: Бион, 1959<\/p>\n**Связанные заметки:** Зависть к пониманию, Деструктивность в ПА, Усиливающий тревогу объект", "Область созидания — третий уровень психики без внешнего объекта (Балинт)": "Кроме области эдипова конфликта и области базисного дефекта Балинт называет третью область психики — **область созидания.**\n\nРазличаются они устройством отношений. Область эдипова конфликта характеризуется взаимодействием между субъектом и минимум двумя отличными от него объектами. Область базисного дефекта — весьма специфическими отношениями, разворачивающимися исключительно между двумя персонами. В области созидания **внешний объект отсутствует**: субъект предоставлен самому себе, и главная его забота — сотворить нечто вне себя самого. То, что должно быть создано, может быть объектом, но не обязательно им является.\n\nСюда Балинт относит не только художественное творчество, самый яркий и часто упоминаемый пример, но и занятия математикой и философией, постижение и понимание чего-то или кого-то, — а также два чрезвычайно важных феномена: **ранние фазы физического или психического заболевания и спонтанное выздоровление.**\n\n<p class=\"src\">Источник: Балиндт, базис дефект<\/p>\n\n## Связанные заметки\n\n→ Нет внешнего объекта — нет переноса, и метод бессилен (Балинт)\n→ Протообъект — имя для того, что есть там, где объектов нет (Балинт)\n→ Обектные отношения Балиндт\n→ <a class=\"note\" data-note=\"Когда кажется, что переноса в работе нет — карта темы\">Когда кажется, что переноса в работе нет — карта темы<\/a>", "Символическое уравнивание": "Руссийон, 2011: \nУ Руссийона нет термина «символическое уравнение», но он описывает тот же феномен. Речь идёт о случаях, когда **репрезентация не отделяется от восприятия или галлюцинации** и удерживает **присутствие объекта**, а не его отсутствие. В такой ситуации не возникает дистанции, необходимой для символизации, и вместо символической трансформации появляются **эквиваленты** — телесные, аффективные или процессуальные формы, свидетельствующие о неинтегрированности первичной психической материи.\n\n→ Символизация при психотических состояниях — тот же провал символизации, доведённый до предела (галлюцинация, бред)", "Интроекция и инкорпорация — работа символа против магии (Абрахам и Торок)": "Абрахам и Торок разводят два процесса, которые у Фрейда и Кляйн часто смешиваются.\n\n**Интроекция** (понятие Ференци) — медленное расширение и обогащение внутреннего мира через символ. Утрата открывает в психике зазор; интроекция связывает влечение, привязанное к утраченному объекту, всё более точными метафорами, так что его энергию можно вернуть, а образ объекта — усвоить. Это процесс: он меняет психику.\n\n**Инкорпорация** — фантазм. Она лишь изображает глубокое психическое изменение с помощью магии. Чтобы не пришлось «проглотить» утрату, мы воображаем, будто проглотили — или уже проглотили — само утраченное, как вещь (Abraham & Torok, 1994, с. 126). Она сохраняет психику неизменной и отрицает саму травму.\n\nОбе операции растут из ротовой полости: младенец сначала буквально получает молоко, потом крик и слово начинают замещать отсутствующую грудь — так интроекция отделяется от инкорпорации.\n\n**Для «Соляриса» это, возможно, самая точная рамка.** Хари-гость — инкорпорация в чистом виде: не образ Хари, выросший в памяти Кельвина, а сама Хари как вещь, которую он будто бы «проглотил» и которая теперь существует нетронутой. Работа горя была бы интроекцией: превратить Хари в воспоминание, метафору, часть себя.\n\n<p class=\"src\">Источник: Абрахам и Торок, Скорбь или меланхолия — интроекция против инкорпорации (1972)<\/p>\n\n## Связанные заметки\n\n→ Деметафоризация и объективация — два приёма инкорпорации (Абрахам и Торок)\n→ Крипта — объект, погребённый заживо внутри Я (Абрахам и Торок)\n→ Траур содержит утешение — объект теперь во мне, и я не могу его потерять (Абрахам, 1924)\n→ Тень объекта, павшая на Я — идентификация вместо отказа от объекта (Фрейд, 1917)\n→ Идентификация - это взаимодействие проекции и интроекции\n→ Меланхолия и незавершённая работа горя в «Солярисе» Лема — подготовка доклада", "Сублимация — карта области (Фрейд)": "**Идея.** Сублимация — самая оптимистичная из судеб влечения: сексуальная энергия меняет цель на несексуальную и питает работу, искусство, познание, дружбу. У Фрейда она проходит три ступени осмысления: третий исход конституции наряду с перверсией и неврозом (1905), одна из четырёх судеб влечения (1915) и, наконец, механизм с внутренней ценой (1923): чтобы сублимировать, Я должно сперва забрать либидо себе, десексуализировать его — а значит, всякая сублимация втайне сродни утрате объекта. При этом Фрейд честен в двух признаниях: механизм до конца не объяснён, а сам путь «доступен немногим».\n\n**Станции линии:**\n\n- **Третий исход (1905)** → Сублимация как третий исход — характер строится из подавленных перверсных влечений (Фрейд, 1905, Три очерка), Реактивные образования и сублимация строят латентный период (Фрейд, 1905, Три очерка), Сексуальность и телесные функции сообщаются в обе стороны (Фрейд, 1905, Три очерка)\n- **Образцовый случай: Леонардо (1910)** → Реконструкция развития Леонардо — сублимация либидо в жажду знания и регрессии (Фрейд, 1910), Три судьбы влечения к исследованию — торможение, навязчивое умствование, сублимация (Фрейд, 1910), Улыбка Моны Лизы и две матери в святой Анне (Фрейд, 1910), Границы психоанализа в биографии — доля свободы и органическая основа вытеснения и сублимации (Фрейд, 1910), Сексуализация мышления через влечение к знанию — раздумье как навязчивый симптом (Фрейд, 1909, Человек-Крыса) (контрпример: неудача сублимации исследования)\n- **Место в метапсихологии (1914–1915)** → Четыре судьбы влечения — обращение в противоположность, поворот на себя, вытеснение, сублимация (Фрейд, 1915), Сублимация и идеализация — различение по объекту приложения (Фрейд, 1914), Сублимация и пластичность либидо как защита от патогенного действия отказа (Фрейд, 1916-17)\n- **Сублимированная гомосексуальность и социальное чувство** → Сублимированная гомосексуальность как эротический вклад в дружбу и общественное чувство (Фрейд, 1911, Шребер), Функциональное преимущество заторможенных влечений и их обратимость (Фрейд, 1921, Групповая психология), Любовь как культурный фактор — поворот от эгоизма к альтруизму (Фрейд, 1921, Групповая психология)\n- **Механизм и его цена (1923)** → Сублимация как десексуализация через навязывание Я себя Оно в качестве объекта любви (Фрейд, 1923), Смещаемая индифферентная энергия — десексуализированный Эрос как источник сублимации (Фрейд, 1923)\n- **Сублимация в клинике** → Сублимация садизма под влиянием немецкого учителя (Фрейд, 1918, Человек-Волк), Сублимация мазохизма через отождествление с Христом (Фрейд, 1918, Человек-Волк), Работа религии — сублимация и отождествление с Христом (Фрейд, 1918, Человек-Волк), Влияние зависти к пенису на характер и её сублимация (Фрейд, 1933)\n- **Опора культуры — и путь для немногих (1930)** → Сублимация и отказ от влечений — два механизма культуры (Фрейд, 1930), Каталог техник поиска счастья (Фрейд, 1930), Слабое место сублимации — доступна немногим и не даёт полной защиты от страдания (Фрейд, 1930), Наслаждение красотой — чувство с заторможенной целью (Фрейд, 1930), Любовь как центр жизни — уязвимейший путь к счастью (Фрейд, 1930), Искусство как заместительное удовлетворение древнейших культурных отказов (Фрейд, 1927), Спекулятивный миф об укрощении огня через отказ от мочеиспускания на пламя (Фрейд, 1930)\n\n**Почему это узел.** Сублимация — мост между самой интимной клиникой (судьба одного влечения) и самой широкой теорией культуры: одна и та же операция объясняет характер, дружбу, искусство и науку. При этом она осталась у Фрейда наименее разработанным из механизмов — он сам называл вопрос открытым, и именно отсюда выросли позднейшие споры (у нас в базе — через групповой трек и Винникотта). Родственные узлы: Стадии либидо — карта области (Фрейд), Культура и религия — карта области (Фрейд), Фантазия — карта области (Фрейд) (искусство как обратный путь из фантазии), Нарциссизм — карта области (Фрейд).", "Когда кажется, что переноса в работе нет — карта темы": "**Идея.** Есть узнаваемое клиническое переживание: сессии идут, а переноса будто нет. Пациент не обращается к аналитику, не сердится на него, не привязывается; аналитику скучно, внимание не держится, кажется, что ничего не происходит. Фрейд объяснял это устройством пациента: нет объект-либидо — нет переноса — аналитик бессилен. Почти все, кто после него работал с нарциссическими и психотическими пациентами, это объяснение оспорили, и каждый по-своему. Тема собирает их вместе — вместе с той единственной областью, где отсутствие переноса оказывается настоящим.\n\n**Как пользоваться картой.** Пять ответов на один вопрос идут по нарастанию: сначала спор с исходным диагнозом, потом четыре разных объяснения того, почему переноса не видно, потом граница, где его правда нет, и наконец случай, когда его малость — ценность, а не проблема.\n\n## 0. Исходная позиция, с которой спорят\n\n→ Отсутствие переноса при нарциссических неврозах как причина неудачи терапии (Фрейд, 1916-17) — пациенты отвергают врача не враждебно, а безразлично; механизм исцеления просто нельзя запустить\n→ «Каменная стена» и безразличие — как Розенфельд читает пессимизм Фрейда (Розенфельд, 1964) — сводка фрейдовской позиции и констатация, что практики с ней не согласились\n→ Аутоэротическая фаза как основание тезиса о неспособности к переносу (Розенфельд, 1952) — теоретическая опора тезиса пережила собственное основание\n\n## 1. Перенос есть, но говорит на незнакомом языке (Розенфельд)\n\n→ <a class=\"note\" data-note=\"Не отсутствие переноса, а трудность его распознать (Розенфельд, 1952)\">Не отсутствие переноса, а трудность его распознать (Розенфельд, 1952)<\/a> — формула, задающая всю тему\n→ Уход шизофреника — защита от преследователей, а не аутоэротизм (Розенфельд, 1952)\n→ Отстранённость второй сессии оказалась проективной идентификацией (Розенфельд, 1952)\n→ Кажущееся аутоэротическое состояние скрывает интроекцию и проекцию разом (Розенфельд, 1952)\n→ Смешение с объектом как самая примитивная форма объектного отношения (Розенфельд, 1952)\n→ Скорость, с какой выходит негативный перенос у острого больного (Розенфельд, 1952)\n→ Интерпретировать проективную идентификацию, чтобы пациент мог «забрать себя обратно» (Розенфельд, 1952)\n\n## 2. Перенос спрятан защитой от отдельности (Розенфельд о нарциссизме)\n\n→ Защита от осознания отдельности делает нарциссический перенос невидимым (Розенфельд, 1964) — ключевая заметка раздела\n→ Нарциссическое отношение переживается обеими сторонами как идеальное (Розенфельд, 1964) — перенос замаскирован под благополучие\n→ Состояния, похожие на первичный нарциссизм, суть примитивные объектные отношения (Розенфельд, 1964)\n→ Различие невроза переноса и нарциссического невроза стоит снять (Кон и Стоун, у Розенфельда, 1964)\n→ Прогноз измеряется тем, насколько пациент признаёт отношение к аналитику (Розенфельд, 1964)\n\n## 3. Перенос не тянет внимание, потому что к аналитику не обращаются (Кохут)\n\n→ Периоды, когда «ничего не происходит» — работа нарциссического переноса (Ромашкевич о Кохуте) — точная формулировка самого переживания\n→ <a class=\"note\" data-note=\"Отсутствие объектного катексиса — почему внимание не удерживается (Кохут)\">Отсутствие объектного катексиса — почему внимание не удерживается (Кохут)<\/a> — механизм\n→ Скука аналитика как главная опасность переноса-слияния и близнецового (Кохут)\n→ Зеркальный перенос удерживает внимание, слияние — нет (Кохут) — ощущение пустоты как грубая шкала глубины регресса\n→ Невнимательность здесь — свойство ситуации, а не контрперенос (Кохут)\n→ Когда невнимательность всё-таки становится контрпереносом (Кохут)\n→ Защитная скука отличается от настоящей (Кохут)\n→ Равномерно парящее внимание держится, пока конфликты аналитика не мешают восприимчивости (Кохут)\n→ Нарциссическая уязвимость аналитиков остаётся невыявленной (Кохут)\n\n**Что с этим делать:**\n→ Аналитику отведено скромное место — условие работы с зеркальным переносом (Кохут)\n→ Нарциссический перенос не интерпретируют — он лекарство, а не болезнь (Ромашкевич о Кохуте)\n→ Нарциссический перенос — единственная нить, и порвать её легко (Ромашкевич о Кохуте)\n\n## 4. Переноса не видно, потому что смотрят не туда (Ферро)\n\n→ Шкала переноса «Меркалли» — нулевой уровень не есть отсутствие (Ферро) — «отсутствие переноса в анализе невозможно»\n→ Оазис Валентины — как выглядит нулевой уровень (Ферро) — сессия из шести рисунков, где перенос весь в персонажах поля\n→ Уровни контрпереноса — от поля-рассказчика до разрыва сеттинга (Ферро)\n→ Экстремальные переносы — бета-экраны для активации нерецептивного аналитика (Ферро) — противоположный край той же шкалы\n\n## 5. Переноса нет не у пациента, а в конфигурации ситуации\n\n→ Защитное избегание Фрейд принял за неспособность к переносу (Ромашкевич о Кохуте) — сеттинг, в котором нарциссическое просто не всплывает\n→ Аналитик может незаметно мешать установлению зеркального переноса (Кохут) — помеха, защищённая ссылкой на технику\n→ Две причины, по которым Анна Фрейд не ждала невроза переноса у ребёнка (у Змановской) — аналитик стал слишком чётко очерченной фигурой\n→ «Не» реляционной работы — без переноса, проекции и искажений (Дрозек и др.) — крайний случай: конструкт переноса убран из языка намеренно\n\n## 6. Дистанция как способ сохранить аналитика\n\n→ пациент защищает аналитика — зависимость выражается только через горечь и упрёк, потому что сближение считается разрушительным\n→ одна из причин желания избавиться от части Я с помощью проективной идентификации защита аналитика\n→ психотический перенос как частный случай проективной идентификации — аналитик не отдельный объект, а часть внутреннего мира\n→ Толстокожий и тонкокожий нарцисс (Розенфельд) — плотность защитного барьера как мера того, насколько мало будет видно\n\n## 7. Перенос, который восстанавливается только задним числом\n\n→ Нарциссический перенос возможно анализировать, если его слушать\n→ Пациент К — отстранённый жаргон как ширма\n→ Суть \"слушания слушания\" и Функции \"слушания слушания\"\n→ Наделение смыслом молчания\n→ Мертвая мать — Андре Грин — присутствие при психической отсутствующести; след остаётся в форме сессии, а не в её содержании\n\n## 8. Где отсутствие переноса настоящее\n\n→ <a class=\"note\" data-note=\"Область созидания — третий уровень психики без внешнего объекта (Балинт)\">Область созидания — третий уровень психики без внешнего объекта (Балинт)<\/a>\n→ Нет внешнего объекта — нет переноса, и метод бессилен (Балинт) — единственная в теме честная граница метода\n→ Отсутствием переноса объясняется и неразработанность психологии беременности (Балинт)\n→ Протообъект — имя для того, что есть там, где объектов нет (Балинт)\n\n## 9. Где малость переноса — ценность, а не проблема\n\n→ «Момент встречи» — редкий случай, когда переноса действительно минимум (Бостонская группа)\n\n## Спор, который стоит держать в голове\n\nСогласившись, что перенос есть, авторы немедленно расходятся в том, что с ним делать. Розенфельд интерпретирует найденное отношение, потому что только так пациент сможет «забрать себя обратно». Кохут в изложении Ромашкевича не интерпретирует вовсе: нарциссический перенос — лекарство, а не болезнь, и разрушать его нельзя. Штайнер в версии TFP ищет средний путь — аналитик-центрированную интерпретацию и выжидание момента, когда грандиозность сама даст трещину (Такт и время — аналитик-центрированная интерпретация с нарциссическими пациентами (Штайнер, TFP)). Ферро переносит вопрос в поле: интерпретировать нужно не отношение, а рассказ. А MBT-N вообще отказывается от слова.\n\n## Мосты к другим частям базы\n\n→ Перенос и Контрперенос — структурные заметки\n→ Проективная идентификация и Если перенос включает в себя все объектные отношения\n→ Аналитическое поле, Поле, Перенос и контрперенос в группе — поле vs таксономия\n→ Нарциссизм — нарциссический кластер базы, куда тема вливается целиком\n→ Диагностика через селфобъектный перенос — методологическая проблема (Афек) — критика диагностики по типу переноса\n→ Почему нейтральность не работает с нарциссом (Дрозек и др.)\n\n## Источники\n\n→ Розенфельд, Психотические состояния (1965)\n→ Кохут, Анализ самости (1971)\n→ Ферро, Избегание эмоций, проживание эмоций (2023)\n→ Балиндт, базис дефект\n→ Змановская, Современный психоанализ\n→ Бостонская группа, 2005 — процесс изменения", "Не отсутствие переноса, а трудность его распознать (Розенфельд, 1952)": "До недавнего времени, пишет Розенфельд, аналитики не брались лечить шизофреников, полагая, что шизофреник не способен образовать перенос. Собственный опыт говорит ему иное: **мы имеем дело не с отсутствием переноса, а с трудной задачей распознать и проинтерпретировать шизофренические переносные феномены.**\n\nЭто перенос вопроса из одной области в другую. У Фрейда неудача терапии объясняется устройством пациента: нет объект-либидо — нет и переноса, и аналитик бессилен (см. Отсутствие переноса при нарциссических неврозах как причина неудачи терапии (Фрейд, 1916-17)). У Розенфельда та же клиническая картина становится вопросом восприимчивости и техники аналитика: перенос есть, но говорит на языке, которому аналитика не учили.\n\nЦель статьи заявлена в трёх пунктах: показать, что острый шизофренический пациент способен образовать и положительный, и отрицательный перенос; что эти феномены можно интерпретировать пациенту; и что его отклик на интерпретацию временами отчётливо заметен.\n\n<p class=\"src\">Источник: Розенфельд, Психотические состояния (1965)<\/p>\n\n## Связанные заметки\n\n→ Отсутствие переноса при нарциссических неврозах как причина неудачи терапии (Фрейд, 1916-17)\n→ «Каменная стена» и безразличие — как Розенфельд читает пессимизм Фрейда (Розенфельд, 1964)\n→ психотический перенос как частный случай проективной идентификации\n→ <a class=\"note\" data-note=\"Когда кажется, что переноса в работе нет — карта темы\">Когда кажется, что переноса в работе нет — карта темы<\/a>", "Холдинг и страх падения — Винникотт": "## Холдинг и моторное развитие\n\nРазвитие селф тесно связано с чувством контроля и развитием моторных навыков. Концепция **холдинга** Винникотта в своём конкретном аспекте описывает физическое удержание ребёнка, который ещё не может держаться прямо самостоятельно.\n\nРазвивающаяся двигательная независимость позволяет:\n- дистанцироваться от объекта\n- физическое расстояние → психическая жизнь в отсутствие физического присутствия объекта\n\n## Падение с кушетки\n\nВинникотт (1949) рассматривает падение с кушетки как аналог опыта падения с колен аналитика — повторное переживание травмы рождения и разлуки. Сопровождается желанием быть подхваченным аналитиком из глубин падения.\n\n## Головокружение в конце сессии (Ференци, 1914)\n\nФеренци описывает головокружение при вставании с кушетки как:\n- переход между принципом удовольствия и принципом реальности (Фрейд)\n- чувство отрыва от аналитической поддержки (объектные отношения)\n\nГоловокружение в конце сессии = **сигнал тела** о том, что аналитическое контейнирование претерпело неудачу.\n\n→ Психический позвоночник — Анзье\n→ Страх падения и страх растворения — различие по Тастин\n\n## Связанные заметки из базы\n\nДругая грань холдинга у Винникотта — не про страх падения, а про создание пространства для игры и творчества:\n→ Концепция промежуточной зоны по Винникотту\n→ Переходный объект и промежуточная зона\n→ Творчество в аналитической технике\n\n## Источник\n→ Шеллекес, Ужас падения и растворения\nWinnicott, D.W. (1949). Mind and Its Relation to Psyche-Soma.\nWinnicott, D.W. (1954). Metapsychological and Clinical Aspects of Regression.\nFerenczi, S. (1914). Sensations of giddiness at the end of the psycho-analytic session.\n**Связанные заметки (Талеб):** сверхзаботливая мать подавляет антихрупкость ребёнка"};
+const TEXTS = {"prolog": "### Пролог. Крик и трапеза\n\nПариж, лето 1738 года. Самое зловонное место самого зловонного города Европы — рыбный ряд у кладбища Невинных. Под прилавком, среди рыбьих голов и потрохов, женщина рожает ребёнка и собирается оставить его там же, в отбросах. Младенец кричит. Крик выдаёт мать, и её казнят. Зюскинд называет этот крик выбором: против любви, но за жизнь.\n\nДвадцать девять лет спустя, на том же кладбище, ночью, бродяги разрывают Жан-Батиста Гренуя на куски и съедают. И, говорит автор, впервые в жизни делают что-то из любви. Второй выбор зеркален первому: за любовь, но против жизни.\n\nМежду этими двумя сценами — жизнь гения, создавшего самые совершенные духи на свете. И мой вопрос: можно ли назвать творчеством то, что от первого до последнего шага идёт к смерти? - сократить, меньше пересказываний сюжета, нет на это времени, слушатели уже это читали", "I": "### I. Чем живо живое\n\nНачну с того, что делает творчество живым. Фрейд называл перенос «промежуточным царством между болезнью и жизнью». Сам по себе перенос — повторение: старая пьеса, которую мы играем снова и снова, не помня текста. Но если рядом есть тот, кто её примет и не сыграет по старым нотам, повторение становится игрой, а игра — творчеством. Винникотт говорил, что терапия происходит там, где встречаются две игры. Лёвальд — что в анализе призраки становятся предками.\n\nС искусством так же. Писатель, по Фрейду, подкупает нас красотой, чтобы мы могли без стыда встретиться со *своими собственными* фантазиями. Луиза Буржуа семьдесят лет лепила, шила и вязала одну и ту же детскую рану — и называла искусство гарантией душевного здоровья. Живое произведение — это обращение. Оно оставляет другому свободу ответить, и после него и автор, и зритель становятся чуть больше собой.", "II": "### II. Ребёнок, который не пахнет\n\nЧтобы стать собой, нужно, чтобы тебя кто-то увидел. «Когда я смотрю, меня видят, значит, я существую», — пишет Винникотт. Только у младенца первые глаза — это нос: мать он узнаёт по запаху раньше, чем по лицу.\n\nГренуй не пахнет. Кормилица приносит его обратно: от этого ребёнка ничем не пахнет, значит, он нечистый. Первое узнавание не состоялось. А первая встреча с чужой волей — решение матери выбросить его к рыбьим потрохам. С тех пор чужая свобода значит для него одно: тебя выбросят.\n\nДальше — вереница людей, и никто не задерживается. Мадам Гайяр берёт за него деньги, дубильщик Грималь — рабочие руки, парфюмер Бальдини — рецепты, маркиз — доказательство своей безумной теории. Его использовали, но не любили. Гренуя никто не видел целым — и он не видит целым никого.\n\nМелани Кляйн назвала бы это миром частичных объектов. Младенец сначала знает не мать, а грудь: она то кормит, то исчезает. Целого человека — со своей жизнью, которого можно любить и потерять, — он открывает позже. Гренуй так и остаётся у груди. Ему нужна не девушка, а её запах. Девушку можно выбросить.\n\nИ ещё одна мысль Винникотта: другой становится настоящим, когда переживает наше разрушение — выживает и не мстит. В мире Гренуя не выживает никто. Значит, настоящего другого там нет. А без другого нет и его самого.", "III": "### III. Язык, которого нет\n\nДля запахов почти нет слов. Мы говорим «пахнет как…» — и всегда промахиваемся. Гренуй различает тысячи запахов, но с трудом понимает слова «совесть», «Бог», «радость»: у них нет запаха. Он мыслит не понятиями, а ощущениями. Его внутренний мир огромен — и непереводим. Опыт, для которого нет языка, нельзя рассказать. Нерассказанное некому воспринять. Круг замыкается.\n\nБион сказал бы: то, что никто не принял и не переварил, возвращается безымянным ужасом. В пещере Гренуй видит сон — его окутывает туман, и этот туман — его собственный запах, которого он не может почуять. Он просыпается с криком. Это второй крик романа.\n\nОтсутствие запаха значит не «во мне ничего нет». Оно значит: «меня никто не воспринял — и поэтому я не могу воспринять себя».", "IV": "### IV. Духи, которые отменяют другого\n\nИ вот он создаёт шедевр. Двадцать пять девушек, двадцать пять убийств, один флакон. Его ведут на эшафот в Грасе, на нём несколько капель этих духов — и толпа, пришедшая смотреть на казнь, падает перед ним в экстазе любви.\n\nА наутро — стыд, молчание и забвение. Никто не изменился, потому что ничего не было пережито. Это было не искусство, а захват: гипноз, о котором писал Фрейд, когда чужой образ встаёт на место твоего собственного идеала. Жанин Шассге-Смиргель назвала бы это ложным творением: оно стирает различия и выдаёт смесь за совершенство — двадцать пять разных жизней, слитых в один запах. А Кляйн увидела бы жадность без благодарности: всё, что он вычерпал из мира, становится не даром, а оружием.", "V": "### V. Духи, которые отменяют автора\n\nНа вершине власти, когда его любят все, Гренуй понимает, что ненавидит их и что их любовь ему не нужна. Она обращена не к нему, а к запаху. Чем сильнее любят маску, тем яснее, что его самого нет.\n\nВперёд, к другому человеку, идти некуда. Остаётся назад. Семь лет он уже пролежал в темноте внутри горы — почти буквальная утроба, та мечта о возвращении, о которой писал Ференци. Теперь он возвращается туда, где родился, и уходит внутрь чужих тел. Ханна Сегал описала, как там, где не родился символ, «быть принятым» значит буквально «быть съеденным». Будто он отматывает время назад — к той минуте, когда ему ещё не успели отказать в месте.\n\nЕго вобрали. Но вобрали только запах.", "VI": "### VI. Так творчество ли это?\n\nЭто та же сила, что движет любым художником: жадная, всевидящая, беспощадная к материалу. Но обращённая против субъекта. Творчество к жизни оставляет другому свободу ответить и меняет обоих. Творчество Гренуя — к смерти: оно отменяет и другого, и самого автора.", "epilogue": "### Эпилог. Пациент без запаха\n\nТакие люди приходят к нам. Рядом с ними ничем не пахнет: кажется, что переноса нет. Но он есть. Он ранний, без сюжета и слов, устроенный как запах: его не видно, он ни к кому не обращён, и узнаём мы о нём телом — по сонливости, по пустоте, по растерянности. Розенфельд показал это на психотических пациентах: перенос не отсутствует, его трудно распознать.\n\nНе всегда за такой тишиной стоит ранний слой: бывает и защита, бывает и наша глухота. Но когда это он, там даже не фантазии, а то, что ещё не успело стать фантазией. Винникотт писал, что катастрофа, которой боится такой пациент, уже случилась, — просто рядом не было никого, кто помог бы её пережить.\n\nМожно ли помочь? Гренуй ни к кому не пришёл. Пациент — пришёл, и это уже обращение. Наша задача — не расшифровать его язык сразу, а стать первым, кто его воспринимает, и выжить в его разрушении.\n\nГренуя в конце съели — и так и не учуяли. Наша работа — учуять того, кто сам себя не чует."};
+
+function md(s) { return window.marked ? marked.parse(s) : '<p>' + s.replace(/\n\n/g, '</p><p>') + '</p>'; }
+
+// полные тексты глав
+document.querySelectorAll('[data-text]').forEach(el => { const t = TEXTS[el.dataset.text]; if (t) el.innerHTML = md(t); });
+
+// появление сцен
+const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) e.target.classList.add('on'); }), { threshold: 0.25 });
+document.querySelectorAll('.scene').forEach(s => io.observe(s));
+
+// прогресс и название главы
+const bar = document.getElementById('progress'), topbar = document.getElementById('topbar'), chName = document.getElementById('chapterName');
+const scenes = [...document.querySelectorAll('[data-chapter]')];
+function onScroll() {
+  const h = document.documentElement;
+  bar.style.width = (h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight) * 100) + '%';
+  topbar.classList.toggle('show', h.scrollTop > innerHeight * 0.6);
+  let cur = '';
+  for (const s of scenes) { if (s.getBoundingClientRect().top < innerHeight * 0.5) cur = s.dataset.chapter; }
+  chName.textContent = cur;
+}
+addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+// панель заметки
+const drawer = document.getElementById('drawer'), overlay = document.getElementById('overlay'), body = document.getElementById('drawerBody'), backBtn = document.getElementById('backBtn');
+let stack = [];
+function render(name) {
+  const n = NOTES[name]; if (!n) return;
+  body.innerHTML = '<h2 class="ntitle"></h2><div class="md"></div>';
+  body.querySelector('.ntitle').textContent = name;
+  body.querySelector('.md').innerHTML = md(n);
+  body.scrollTop = 0;
+  backBtn.hidden = stack.length < 2;
+}
+function openNote(name) {
+  if (!NOTES[name]) return;
+  stack.push(name); render(name);
+  drawer.classList.add('open'); overlay.classList.add('open'); drawer.setAttribute('aria-hidden', 'false');
+}
+function closeNote() { drawer.classList.remove('open'); overlay.classList.remove('open'); drawer.setAttribute('aria-hidden', 'true'); stack = []; }
+document.addEventListener('click', e => {
+  const a = e.target.closest('a.note'); if (!a) return;
+  e.preventDefault(); openNote(a.dataset.note);
+});
+document.querySelectorAll('a.note').forEach(a => { a.setAttribute('href', '#'); a.setAttribute('role', 'button'); });
+overlay.addEventListener('click', closeNote);
+document.getElementById('closeBtn').addEventListener('click', closeNote);
+backBtn.addEventListener('click', () => { stack.pop(); render(stack[stack.length - 1]); });
+addEventListener('keydown', e => { if (e.key === 'Escape') closeNote(); });
+</script>
+</body>
+</html>
