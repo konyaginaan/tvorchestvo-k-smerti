@@ -1,0 +1,397 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Творчество к смерти — показ</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2314100E'/%3E%3Cpath d='M26 14h12v8l6 8v20a4 4 0 0 1-4 4H24a4 4 0 0 1-4-4V30l6-8z' fill='%23E3A781'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Lora:ital,wght@0,400;0,600;1,400&family=Caveat:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root { --bg: #14100E; --text: #F2EADC; --soft: #CFC2AE; --accent: #E3A781; --line: rgba(227,167,129,0.35); --label: #EDE3CF; --ink: #2A211C; --ink-soft: #4B3F37; --ink-muted: #6B5C51; --rust: #9A4528; }
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; overflow: hidden; background: #0B0908; }
+body { color: var(--text); font-family: 'Lora', Georgia, serif; -webkit-font-smoothing: antialiased; cursor: none; user-select: none; }
+body.pointer { cursor: default; }
+
+/* кадр 16:9, вписанный в любой экран */
+#stage { position: absolute; left: 50%; top: 50%; width: 1920px; height: 1080px; transform-origin: 0 0; overflow: hidden; background: var(--bg); }
+.slide { position: absolute; inset: 0; display: flex; align-items: flex-end; overflow: hidden; opacity: 0; visibility: hidden; transition: opacity 1.1s ease, visibility 0s linear 1.1s; background: var(--bg); }
+.slide.current { opacity: 1; visibility: visible; transition: opacity 1.1s ease, visibility 0s; z-index: 2; }
+.slide .bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transform: scale(1.06); transition: transform 16s ease-out; }
+.slide.on .bg { transform: scale(1); }
+.veil { position: absolute; inset: 0; pointer-events: none; }
+.v-bottom { background: linear-gradient(to top, rgba(14,11,9,0.95) 0%, rgba(14,11,9,0.72) 30%, rgba(14,11,9,0) 62%); }
+.v-deep { background: linear-gradient(to top, rgba(14,11,9,0.97) 0%, rgba(14,11,9,0.84) 45%, rgba(14,11,9,0) 80%); }
+.v-top { background: linear-gradient(to bottom, rgba(14,11,9,0.92) 0%, rgba(14,11,9,0.6) 30%, rgba(14,11,9,0) 58%); }
+.v-left { background: linear-gradient(to right, rgba(14,11,9,0.94) 0%, rgba(14,11,9,0.7) 34%, rgba(14,11,9,0) 62%); }
+.v-blood { background: radial-gradient(ellipse at 50% 62%, rgba(70,24,10,0.9) 0%, rgba(70,24,10,0.72) 45%, rgba(40,14,6,0.35) 100%); }
+.content { position: relative; z-index: 2; width: 100%; padding: 0 140px 120px; }
+.top { align-items: flex-start; } .top .content { padding: 150px 140px 0; }
+.mid { align-items: center; } .mid .content { padding: 0 140px; }
+.left { align-items: center; } .left .content { padding: 0 140px; } .left .content > * { max-width: 46%; }
+.right .content { text-align: right; } .right .content > * { margin-left: auto; max-width: 62%; }
+.center { text-align: center; }
+
+h1, h3, .quote, .punch, .big, .year { font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 500; margin: 0; }
+h1 { font-size: 140px; line-height: 1.02; }
+.sub { font-family: 'Cormorant Garamond', Georgia, serif; font-style: italic; font-size: 52px; color: #E8DDC9; margin: 16px 0 0; }
+.author { font-size: 22px; letter-spacing: 5px; text-transform: uppercase; color: var(--soft); margin: 34px 0 0; }
+.eyebrow { font-family: 'Caveat', cursive; font-size: 46px; color: var(--accent); margin: 0 0 8px; }
+.quote { font-style: italic; font-size: 76px; line-height: 1.14; }
+.punch { font-style: italic; font-size: 48px; line-height: 1.25; color: var(--accent); margin: 22px 0 0; }
+.cite { font-size: 22px; letter-spacing: .5px; color: var(--soft); margin: 14px 0 0; }
+.big { font-size: 104px; line-height: 1.15; }
+.year { font-size: 150px; line-height: 1; }
+.foot { font-size: 20px; line-height: 1.5; color: var(--soft); border-top: 1px solid var(--line); padding-top: 12px; margin: 28px 0 0; }
+.content p, .content h1, .content h3, .ghosts span { text-shadow: 0 2px 18px rgba(0,0,0,0.85); }
+
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-top: 34px; counter-reset: lbl; }
+.card { position: relative; background: var(--label); color: var(--ink); border: 1px solid #CDB894; border-radius: 2px; padding: 26px 30px 24px; box-shadow: 0 12px 34px rgba(0,0,0,0.5); counter-increment: lbl; text-align: left; }
+.card::before { content: ''; position: absolute; inset: 7px; border: 1px dashed rgba(154,69,40,0.35); pointer-events: none; }
+.card::after { content: '№ ' counter(lbl); position: absolute; top: 9px; right: 16px; font-family: 'Caveat', cursive; font-size: 24px; color: var(--rust); }
+.card h3 { font-size: 38px; font-weight: 600; margin: 0 0 6px; color: var(--ink); text-shadow: none; }
+.card p { margin: 0; font-size: 22px; line-height: 1.4; color: var(--ink-soft); text-shadow: none !important; }
+.card .small { margin-top: 10px; font-size: 17px; color: var(--ink-muted); }
+.card .tag { font-family: 'Caveat', cursive; font-size: 28px; color: var(--rust); margin: 0 0 2px; }
+.tilt .card:nth-child(odd) { transform: rotate(-.6deg); } .tilt .card:nth-child(even) { transform: rotate(.5deg); }
+.steps { display: flex; gap: 16px; align-items: stretch; margin-top: 34px; counter-reset: lbl; }
+.steps .card { flex: 1 1 0; min-width: 0; }
+.steps .arrow { align-self: center; color: var(--accent); font-size: 36px; flex: none; }
+.chips { display: flex; gap: 16px; margin: 26px 0 6px; }
+.chip { border: 1px solid rgba(227,167,129,0.55); border-radius: 50px; padding: 8px 26px; background: rgba(24,19,16,0.7); font-size: 26px; }
+.ghosts { display: flex; gap: 0 1.6em; }
+.ghosts span { font-family: 'Cormorant Garamond', Georgia, serif; font-style: italic; font-size: 112px; color: var(--accent); }
+.ghosts span:nth-child(2) { transform: translateY(.35em); opacity: .78; }
+.ghosts span:nth-child(3) { transform: translateY(-.15em); opacity: .62; }
+
+.diptych { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; background: #0E0B09; align-items: stretch; }
+.diptych .half { position: relative; overflow: hidden; display: flex; align-items: flex-end; }
+.diptych .half .content { padding: 0 80px 120px; }
+
+.storyboard { display: block; padding: 110px 0 0; background: #0E0B09; }
+.storyboard .strip { padding: 0 60px; }
+.storyboard .strip img { width: 100%; height: auto; display: block; box-shadow: 0 20px 60px rgba(0,0,0,.6); }
+.storyboard .caps { display: grid; grid-template-columns: repeat(4, 1fr); text-align: center; padding: 26px 60px 0; }
+.storyboard .caps h3 { font-size: 40px; font-weight: 600; }
+.storyboard .caps p { margin: 4px 0 0; color: var(--soft); font-size: 22px; }
+
+.end { align-items: center; justify-content: center; text-align: center; background: radial-gradient(ellipse at 50% 40%, #241C17 0%, #0B0908 72%); }
+.end .content { padding: 0 140px; }
+.qr { display: inline-block; background: #F1E8D7; padding: 18px; border-radius: 4px; margin-top: 36px; box-shadow: 0 20px 60px rgba(0,0,0,.6); }
+.qr svg { display: block; width: 260px; height: 260px; }
+.url { font-size: 30px; color: var(--soft); margin: 22px 0 0; letter-spacing: .5px; }
+
+/* появление: плавно при входе; «по щелчку» — шаги одной кнопкой */
+.r { opacity: 0; transform: translateY(24px); filter: blur(6px); transition: opacity 1.1s ease-out, transform 1.1s ease-out, filter 1.1s ease-out; transition-delay: var(--d, 0s); }
+.on .r { opacity: 1; transform: none; filter: none; }
+.on .r.step { opacity: 0; transform: translateY(24px); filter: blur(6px); transition-delay: 0s; }
+.on .r.step.shown { opacity: 1; transform: none; filter: none; }
+
+/* служебное */
+#bar { position: fixed; left: 0; bottom: 0; height: 3px; background: var(--accent); width: 0; transition: width .6s ease; z-index: 20; opacity: .7; }
+#hint { position: fixed; left: 50%; bottom: 26px; transform: translateX(-50%); z-index: 20; font-size: 14px; letter-spacing: 1px; color: var(--soft); background: rgba(14,11,9,.7); border: 1px solid var(--line); border-radius: 40px; padding: 8px 20px; transition: opacity 1s; white-space: nowrap; }
+#hint.hide { opacity: 0; pointer-events: none; }
+#counter { position: fixed; right: 18px; bottom: 12px; z-index: 20; font-family: 'Caveat', cursive; font-size: 20px; color: var(--soft); opacity: 0; transition: opacity .6s; }
+body.pointer #counter { opacity: .7; }
+@media (prefers-reduced-motion: reduce) {
+  .slide, .slide .bg, .r { transition: none !important; transform: none !important; filter: none !important; }
+}
+</style>
+</head>
+<body>
+<div id="stage">
+
+<section class="scene slide top" data-label="Обложка">
+  <img class="bg" src="img/01-cover.webp" style="object-position:32% 50%" alt="Ночь. Бледный юноша стоит спиной на холме над городом, к нему тянутся цветные струи запахов">
+  <div class="veil v-top"></div>
+  <div class="content center">
+    <p class="eyebrow r" style="--d:.2s">доклад по роману Патрика Зюскинда «Парфюмер»</p>
+    <h1 class="r" style="--d:.5s">Творчество к смерти</h1>
+    <p class="sub r" style="--d:.8s">Жан-Батист Гренуй и мир частичных объектов</p>
+    <p class="author r" style="--d:1.1s">Конягина Анастасия · декабрь 2026</p>
+  </div>
+</section>
+
+<section class="scene slide diptych" data-label="Пролог">
+  <div class="half">
+    <img class="bg" src="img/02-market.webp" alt="Рыбный рынок, под прилавком среди рыбы кричит младенец">
+    <div class="veil v-bottom"></div>
+    <div class="content"><p class="year r">1738</p><p class="punch r" style="--d:.3s">Против любви, но за жизнь</p></div>
+  </div>
+  <div class="half">
+    <img class="bg" src="img/03-fire.webp" alt="Ночное кладбище, круг бродяг у костра">
+    <div class="veil v-bottom"></div>
+    <div class="content"><div class="r step"><p class="year">1767</p><p class="punch">За любовь, но против жизни</p></div></div>
+  </div>
+</section>
+
+<section class="scene slide right" data-label="Вопрос">
+  <img class="bg" src="img/04-flask.webp" alt="Рука поднимает к свече светящийся янтарём флакон">
+  <div class="veil v-bottom"></div>
+  <div class="content"><p class="quote r" style="--d:.4s">Можно ли назвать творчеством то, что от первого до последнего шага идёт к смерти?</p></div>
+</section>
+
+<section class="scene slide" data-label="I. Чем живо живое">
+  <img class="bg" src="img/05-baldini.webp" alt="Лавка парфюмера: Гренуй смешивает духи, Бальдини смотрит поражённо">
+  <div class="veil v-deep"></div>
+  <div class="content">
+    <p class="quote r" style="--d:.3s">Повторение становится творчеством, когда его кто-то принимает</p>
+    <div class="steps r step">
+      <div class="card"><h3>Повторение</h3><p>старая пьеса, которую играем, не помня текста</p></div>
+      <span class="arrow">→</span>
+      <div class="card"><h3>Другой принимает</h3><p>и не играет по старым нотам</p></div>
+      <span class="arrow">→</span>
+      <div class="card"><h3>Игра</h3><p>терапия там, где встречаются две игры</p></div>
+      <span class="arrow">→</span>
+      <div class="card"><h3>Творчество</h3><p>призраки становятся предками</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="scene slide left" data-label="I. Буржуа">
+  <img class="bg" src="img/06-bourgeois.webp" style="object-position:56% 50%" alt="Пожилая женщина-скульптор выправляет ногу огромного металлического паука">
+  <div class="veil v-left"></div>
+  <div class="content">
+    <p class="quote r" style="--d:.3s">«Искусство — гарантия душевного здоровья»</p>
+    <p class="punch r" style="--d:.6s">— Луиза Буржуа</p>
+    <p class="punch r step" style="color:#E8DDC9">Живое произведение — это обращение.</p>
+  </div>
+</section>
+
+<section class="scene slide right" data-label="II. Ребёнок, который не пахнет">
+  <img class="bg" src="img/07-nurse.webp" alt="Кормилица отдаёт младенца, монах принюхивается">
+  <div class="veil v-bottom"></div>
+  <div class="content">
+    <p class="quote r" style="--d:.3s">«Когда я смотрю, меня видят, значит, я существую»</p>
+    <p class="cite r" style="--d:.5s">Винникотт</p>
+    <p class="punch r step">Гренуй не пахнет. Первое узнавание не состоялось.</p>
+  </div>
+</section>
+
+<section class="scene slide storyboard" data-label="II. Использовали">
+  <div class="strip"><img src="img/08-storyboard.webp" alt="Мадам Гайяр, дубильня, Бальдини, маркиз"></div>
+  <div class="caps r" style="--d:.4s">
+    <div><h3>Мадам Гайяр</h3><p>деньги</p></div>
+    <div><h3>Грималь</h3><p>рабочие руки</p></div>
+    <div><h3>Бальдини</h3><p>рецепты</p></div>
+    <div><h3>Маркиз</h3><p>доказательство теории</p></div>
+  </div>
+  <p class="punch center r step">Его использовали, но не любили.</p>
+</section>
+
+<section class="scene slide" data-label="II. Целым">
+  <img class="bg" src="img/09-plums.webp" alt="Девушка со сливами, к ней тянется золотой шлейф аромата">
+  <div class="veil v-bottom"></div>
+  <div class="content center"><p class="quote r" style="--d:.6s">Гренуя никто не видел целым — и он не видит целым никого.</p></div>
+</section>
+
+<section class="scene slide mid" data-label="II. Частичные объекты">
+  <img class="bg" src="img/09-plums.webp" alt="" style="opacity:.12; filter: blur(8px)">
+  <div class="content center">
+    <p class="eyebrow r" style="--d:.2s">мир частичных объектов</p>
+    <p class="quote r" style="--d:.4s">Грудь вместо матери, запах вместо девушки</p>
+    <div class="cards tilt r step" style="max-width:1300px; margin-left:auto; margin-right:auto">
+      <div class="card"><p class="tag">у Мелани Кляйн</p><h3>Младенец</h3><p>Сначала знает не мать, а грудь. Целого человека, которого можно любить и потерять, открывает позже.</p></div>
+      <div class="card"><p class="tag">в романе</p><h3>Гренуй</h3><p>Так и остаётся у груди. Ему нужна не девушка, а её запах.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="scene slide" data-label="II. Выживание">
+  <img class="bg" src="img/10-bridge.webp" alt="Гренуй уходит, за ним дом на мосту рушится в реку">
+  <div class="veil v-deep"></div>
+  <div class="content">
+    <p class="quote r" style="--d:.3s">Другой становится настоящим, когда выживает</p>
+    <div class="steps r step">
+      <div class="card"><h3>Разрушаю</h3><p>в фантазии, в ярости, в нападении</p></div>
+      <span class="arrow">→</span>
+      <div class="card"><h3>Выживает</h3><p>не погибает и не мстит</p></div>
+      <span class="arrow">→</span>
+      <div class="card"><h3>Становится реальным</h3><p>внешним, отдельным, другим</p></div>
+    </div>
+    <p class="punch r step">В мире Гренуя не выживает никто.</p>
+  </div>
+</section>
+
+<section class="scene slide top" data-label="III. Язык, которого нет">
+  <img class="bg" src="img/11-boy.webp" alt="Маленький Гренуй нюхает щепку, вокруг цветные облака запахов">
+  <div class="veil v-top"></div>
+  <div class="content">
+    <div class="ghosts r" style="--d:.3s"><span>совесть</span><span>Бог</span><span>радость</span></div>
+    <p class="punch r step">Опыт, для которого нет языка, некому воспринять.</p>
+  </div>
+</section>
+
+<section class="scene slide top" data-label="III. Второй крик">
+  <img class="bg" src="img/12-cave.webp" alt="Тёмная пещера, спящего окутывает перламутровый туман">
+  <div class="veil v-top"></div>
+  <div class="content center"><p class="quote r" style="--d:.5s">Не «во мне ничего нет», а «меня никто не воспринял — и я не могу воспринять себя»</p></div>
+</section>
+
+<section class="scene slide top" data-label="IV. Шедевр">
+  <img class="bg" src="img/13-workshop.webp" alt="Мастерская ночью: ряд пустых пузырьков и один светящийся флакон">
+  <div class="veil v-top"></div>
+  <div class="content center">
+    <p class="big r step">Двадцать пять девушек.</p>
+    <p class="big r step">Двадцать пять убийств.</p>
+    <p class="big r step">Один флакон.</p>
+  </div>
+</section>
+
+<section class="scene slide" data-label="IV. Наутро">
+  <img class="bg" src="img/14-morning.webp" alt="Пустая площадь на рассвете после праздника">
+  <div class="veil v-deep"></div>
+  <div class="content">
+    <p class="quote r" style="--d:.3s">А наутро — стыд, молчание и забвение</p>
+    <div class="cards r step">
+      <div class="card"><h3>Захват, а не опыт</h3><p>чужой образ встаёт на место твоего идеала</p><p class="small">Фрейд, 1921</p></div>
+      <div class="card"><h3>Ложное творение</h3><p>двадцать пять жизней — один запах</p><p class="small">Шассге-Смиргель, 1984</p></div>
+      <div class="card"><h3>Жадность без благодарности</h3><p>вычерпанное — не дар, а оружие</p><p class="small">Кляйн, 1957</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="scene slide" data-label="V. Назад, в утробу" style="display:block">
+  <img class="bg" src="img/15-mountain.webp" alt="Гора в разрезе, внутри тёплая полость, в ней свернулась фигура">
+  <div class="veil v-top"></div>
+  <div class="veil v-bottom"></div>
+  <div class="content" style="height:100%; display:flex; flex-direction:column; justify-content:space-between; padding:150px 140px 120px">
+    <p class="quote center r" style="--d:.4s">Его вобрали. Но вобрали только запах.</p>
+    <div class="cards tilt r step">
+      <div class="card"><h3>Пещера</h3><p>семь лет внутри горы — почти буквальная утроба</p><p class="small">Ференци, «Таласса», 1924</p></div>
+      <div class="card"><h3>Трапеза</h3><p>где не родился символ, «быть принятым» — значит «быть съеденным»</p><p class="small">Сегал, 1957</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="scene slide mid" data-label="VI. Так творчество ли это?">
+  <img class="bg" src="img/16-scaffold.webp" alt="Толпа в экстазе тянет руки к эшафоту">
+  <div class="veil v-blood"></div>
+  <div class="content center">
+    <p class="quote r" style="--d:.4s; max-width:1500px; margin:0 auto">Та же сила, что движет любым художником, — но обращённая против субъекта</p>
+    <div class="cards tilt r step" style="max-width:1300px; margin-left:auto; margin-right:auto">
+      <div class="card"><h3>Творчество к жизни</h3><p>оставляет другому свободу ответить и меняет обоих</p></div>
+      <div class="card"><h3>Творчество к смерти</h3><p>отменяет и другого, и самого автора</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="scene slide" data-label="Эпилог">
+  <img class="bg" src="img/17-office.webp" alt="Вечерний кабинет аналитика, между креслами дымка">
+  <div class="veil v-deep"></div>
+  <div class="content">
+    <p class="quote r" style="--d:.3s">Кажется, что переноса нет</p>
+    <div class="chips r" style="--d:.6s"><span class="chip">сонливость</span><span class="chip">пустота</span><span class="chip">растерянность</span></div>
+    <div class="cards r step">
+      <div class="card"><p>Перенос не отсутствует — его трудно распознать.</p><p class="small">Розенфельд, 1952</p></div>
+      <div class="card"><p>Катастрофа уже случилась — но рядом не было никого, кто помог бы её пережить.</p><p class="small">Винникотт, «Страх распада»</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="scene slide top" data-label="Финал">
+  <img class="bg" src="img/18-dawn.webp" alt="Кладбище на рассвете, погасший костёр, пустой флакон">
+  <div class="veil v-top"></div>
+  <div class="content center">
+    <p class="punch r" style="--d:.3s; color:#E8DDC9">Гренуй ни к кому не пришёл. Пациент — пришёл.</p>
+    <p class="quote r step">Наша работа — учуять того, кто сам себя не чует.</p>
+  </div>
+</section>
+
+<section class="scene slide end" data-label="Спасибо">
+  <div class="content">
+    <p class="eyebrow r" style="--d:.2s">статья, заметки и источники</p>
+    <p class="quote r" style="--d:.4s">Творчество к смерти</p>
+    <div class="qr r" style="--d:.7s" id="qr"></div>
+    <p class="url r" style="--d:.9s">konyaginaan.github.io/tvorchestvo-k-smerti</p>
+    <p class="author r" style="--d:1.1s">Конягина Анастасия</p>
+  </div>
+</section>
+
+</div>
+<div id="bar"></div>
+<div id="counter"></div>
+<div id="hint">→ или пробел — дальше · ← — назад · F — во весь экран</div>
+
+<script>window.FX_MODE = 'show';</script>
+<script src="fx.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
+<script>
+const stage = document.getElementById('stage');
+const slides = [...document.querySelectorAll('.slide')];
+const bar = document.getElementById('bar'), counter = document.getElementById('counter'), hint = document.getElementById('hint');
+
+// кадр 1920×1080 вписывается в любой экран
+function fit() {
+  const k = Math.min(innerWidth / 1920, innerHeight / 1080);
+  stage.style.transform = 'scale(' + k + ') translate(-50%, -50%)';
+  if (window.FXAPI) FXAPI.layoutFx();
+}
+addEventListener('resize', fit); fit();
+
+let cur = 0, stepIdx = 0;
+const steps = s => [...s.querySelectorAll('.step')];
+function show(i, fromEnd) {
+  i = Math.max(0, Math.min(slides.length - 1, i));
+  slides.forEach((s, j) => {
+    const active = j === i;
+    s.classList.toggle('current', active);
+    s.classList.toggle('live', active);
+    if (active) { s.classList.remove('on'); void s.offsetWidth; s.classList.add('on'); }
+    else setTimeout(() => { if (!s.classList.contains('current')) s.classList.remove('on'); }, 1200);
+  });
+  cur = i;
+  const st = steps(slides[i]);
+  stepIdx = fromEnd ? st.length : 0;
+  st.forEach((e, k) => e.classList.toggle('shown', k < stepIdx));
+  bar.style.width = ((i + 1) / slides.length * 100) + '%';
+  counter.textContent = (i + 1) + ' / ' + slides.length + ' · ' + (slides[i].dataset.label || '');
+  history.replaceState(null, '', '#' + (i + 1));
+}
+function next() {
+  const st = steps(slides[cur]);
+  if (stepIdx < st.length) { st[stepIdx].classList.add('shown'); stepIdx++; }
+  else show(cur + 1);
+}
+function prev() {
+  const st = steps(slides[cur]);
+  if (stepIdx > 0) { stepIdx--; st[stepIdx].classList.remove('shown'); }
+  else if (cur > 0) show(cur - 1, true);
+}
+function fullscreen() {
+  if (!document.fullscreenElement) document.documentElement.requestFullscreen?.().catch(() => {});
+  else document.exitFullscreen?.();
+}
+
+addEventListener('keydown', e => {
+  const k = e.key;
+  if (['ArrowRight', 'ArrowDown', 'PageDown', ' ', 'Enter', 'n', 'N'].includes(k)) { e.preventDefault(); next(); }
+  else if (['ArrowLeft', 'ArrowUp', 'PageUp', 'Backspace', 'p', 'P'].includes(k)) { e.preventDefault(); prev(); }
+  else if (k === 'f' || k === 'F' || k === 'а' || k === 'А') fullscreen();
+  else if (k === 'Home') show(0);
+  else if (k === 'End') show(slides.length - 1, true);
+  hint.classList.add('hide');
+});
+// щелчок или касание: левая четверть — назад, остальное — дальше
+addEventListener('click', e => {
+  if (e.clientX < innerWidth * 0.25) prev(); else next();
+  hint.classList.add('hide');
+});
+// курсор прячется, пока его не трогают
+let pt; addEventListener('mousemove', () => { document.body.classList.add('pointer'); clearTimeout(pt); pt = setTimeout(() => document.body.classList.remove('pointer'), 1800); });
+setTimeout(() => hint.classList.add('hide'), 6000);
+
+// QR-код на последнем кадре
+try {
+  const qr = qrcode(0, 'M'); qr.addData('https://konyaginaan.github.io/tvorchestvo-k-smerti/'); qr.make();
+  document.getElementById('qr').innerHTML = qr.createSvgTag({ cellSize: 8, margin: 0, scalable: true });
+} catch (e) { document.getElementById('qr').remove(); }
+
+const start = parseInt(location.hash.slice(1), 10);
+show(isNaN(start) ? 0 : start - 1);
+</script>
+</body>
+</html>
