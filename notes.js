@@ -48,6 +48,7 @@ function render(name) {
   body.innerHTML = '<h2 class="ntitle"></h2><div class="md"></div>';
   body.querySelector('.ntitle').textContent = name;
   body.querySelector('.md').innerHTML = md(n);
+  if (window.typo) typo(body);
   body.scrollTop = 0;
   backBtn.hidden = stack.length < 2;
 }

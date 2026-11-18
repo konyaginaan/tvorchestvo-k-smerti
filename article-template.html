@@ -24,7 +24,7 @@ a { color: inherit; }
 .hero { position: relative; min-height: 78vh; display: flex; align-items: flex-end; overflow: hidden; background: var(--bg); color: #F2EADC; }
 .hero img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 32% 50%; }
 .hero::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(14,11,9,.95) 0%, rgba(14,11,9,.55) 45%, rgba(14,11,9,.15) 100%); }
-.hero .in { position: relative; z-index: 2; width: 100%; max-width: 860px; margin: 0 auto; padding: 0 24px 9vh; }
+.hero .in { position: relative; z-index: 2; width: 100%; max-width: 760px; margin: 0 auto; padding: 0 24px 9vh; box-sizing: content-box; }
 .hero .kicker { font-family: 'Caveat', cursive; font-size: 28px; color: var(--accent); margin: 0 0 8px; }
 .hero h1 { font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 500; font-size: clamp(48px, 8vw, 104px); line-height: 1.02; margin: 0; }
 .hero .sub { font-family: 'Cormorant Garamond', Georgia, serif; font-style: italic; font-size: clamp(22px, 2.8vw, 34px); margin: 12px 0 0; color: #E8DDC9; }
@@ -34,10 +34,12 @@ a { color: inherit; }
 .nav a:hover { opacity: 1; color: var(--accent); }
 
 /* текст */
-main { max-width: 760px; margin: 0 auto; padding: 8vh 24px 4vh; }
-.lead { font-family: 'Cormorant Garamond', Georgia, serif; font-style: italic; font-size: clamp(22px, 2.4vw, 28px); line-height: 1.45; color: var(--ink-soft); border-left: 3px solid var(--rust); padding-left: 20px; margin: 0 0 8vh; }
+main { max-width: 760px; margin: 0 auto; padding: 8vh 24px 4vh; box-sizing: content-box; }
+.lead { font-family: 'Cormorant Garamond', Georgia, serif; font-style: italic; font-size: clamp(22px, 2.4vw, 28px); line-height: 1.45; color: var(--ink-soft); border-left: 3px solid var(--rust); padding-left: 20px; margin: 0 0 14px -23px; }
+.hint { font-size: 14px; color: var(--muted); margin: 0 0 8vh; }
+.hint i { font-style: normal; color: var(--rust); }
 .lead a { text-decoration: underline; text-decoration-color: rgba(154,69,40,.4); text-underline-offset: .15em; }
-.toc { margin: 0 0 9vh; padding: 22px 26px; border: 1px solid var(--line); background: #ECE1CD; }
+.toc { margin: 0 0 9vh; padding: 20px 0 22px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
 .toc p { font-family: 'Caveat', cursive; font-size: 24px; color: var(--rust); margin: 0 0 6px; }
 .toc ol { margin: 0; padding-left: 0; list-style: none; columns: 2; column-gap: 28px; }
 .toc li { margin: 4px 0; break-inside: avoid; }
@@ -65,6 +67,7 @@ section.ch { margin: 0 0 10vh; scroll-margin-top: 20px; }
 footer { text-align: center; padding: 6vh 24px 8vh; font-size: 13px; letter-spacing: 2px; text-transform: uppercase; }
 footer a { color: var(--rust); text-decoration: none; margin: 0 12px; }
 
+@media (max-width: 860px) { .lead { margin-left: 0; } }
 @media (max-width: 700px) {
   .fig { margin: 0 -24px 26px; }
   .toc ol { columns: 1; }
@@ -92,7 +95,8 @@ footer a { color: var(--rust); text-decoration: none; margin: 0 12px; }
 </header>
 
 <main>
-  <p class="lead">Перенос и искусство оживают только тогда, когда их кто-то воспринимает. Гренуя никто не воспринял — и его гениальная творческая сила обращается не к другому, а против другого. Это творчество к смерти: оно отменяет и другого, и самого автора. Значком ° отмечены заметки — нажмите, чтобы открыть.</p>
+  <p class="lead">Перенос и искусство оживают, когда их кто-то воспринимает. Гренуя не воспринял никто, и его гениальный дар обращён не к людям, а против них. Я называю это творчеством к смерти: такое творчество отменяет и другого, и самого автора.</p>
+  <p class="hint">Значком <i>°</i> отмечены заметки, их можно открыть прямо здесь.</p>
 
   <nav class="toc"><p>содержание</p><ol id="toc"></ol></nav>
 
@@ -140,5 +144,6 @@ SECTIONS.forEach((s, i) => {
 });
 </script>
 <script src="notes.js"></script>
+<script src="typo.js"></script>
 </body>
 </html>
