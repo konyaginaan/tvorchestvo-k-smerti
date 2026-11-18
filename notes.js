@@ -9,8 +9,8 @@ a.note:hover, a.note:focus-visible { color: #E3A781; outline: none; }
 a.note:hover::after { transform: scale(1.35); }
 #overlay { position: fixed; inset: 0; background: rgba(8,6,5,0.55); opacity: 0; pointer-events: none; transition: opacity .35s; z-index: 60; }
 #overlay.open { opacity: 1; pointer-events: auto; }
-#drawer { --paper: #EEE4D1; --ink: #2A211C; --ink-soft: #4B3F37; --ink-muted: #6B5C51; --rust: #9A4528; position: fixed; top: 0; right: 0; height: 100%; width: min(600px, 100vw); background: var(--paper); color: var(--ink); z-index: 70; transform: translateX(102%); transition: transform .45s cubic-bezier(.2,.7,.2,1); display: flex; flex-direction: column; box-shadow: -20px 0 60px rgba(0,0,0,0.45); font-family: 'Lora', Georgia, serif; text-align: left; }
-#drawer.open { transform: none; }
+#drawer { --paper: #EEE4D1; --ink: #2A211C; --ink-soft: #4B3F37; --ink-muted: #6B5C51; --rust: #9A4528; position: fixed; top: 0; right: 0; height: 100%; width: min(600px, 100vw); background: var(--paper); color: var(--ink); z-index: 70; transform: translateX(102%); transition: transform .45s cubic-bezier(.2,.7,.2,1); display: flex; flex-direction: column; box-shadow: none; font-family: 'Lora', Georgia, serif; text-align: left; visibility: hidden; transition: transform .45s cubic-bezier(.2,.7,.2,1), visibility 0s linear .45s; }
+#drawer.open { transform: none; visibility: visible; box-shadow: -20px 0 60px rgba(0,0,0,0.45); transition: transform .45s cubic-bezier(.2,.7,.2,1), visibility 0s; }
 #drawer header { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 14px 18px; border-bottom: 1px solid #D8C9B0; }
 #drawer header .lbl { font-family: 'Caveat', cursive; font-size: 24px; color: var(--rust); }
 #drawer header .btns { display: flex; gap: 6px; }
