@@ -180,6 +180,17 @@ a.note:hover::after { transform: scale(1.35); }
 .scroll-cue { margin-top: 30px; font-size: 13px; letter-spacing: 4px; text-transform: uppercase; color: var(--soft); animation: bob 2.4s ease-in-out infinite; }
 @keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(6px); } }
 
+/* обложка: под текстом мягкая тень, мелкие строки крупнее и светлее */
+.cover .content { position: relative; }
+.cover .content::before { content: ''; position: absolute; left: 50%; top: 42%; width: min(1500px, 120vw); height: 170%; transform: translate(-50%, -50%); background: radial-gradient(ellipse at center, rgba(14,11,9,.74) 0%, rgba(14,11,9,.55) 38%, rgba(14,11,9,0) 70%); z-index: -1; pointer-events: none; }
+.cover p, .cover h1 { text-shadow: 0 1px 3px rgba(0,0,0,.95), 0 2px 22px rgba(0,0,0,.9) !important; }
+.cover .author { color: #F2EADC; font-size: clamp(15px, 1.4vw, 19px); }
+.cover .hint { color: #EFE6D6; font-size: clamp(14px, 1.15vw, 16px); }
+.cover .hint i { color: #F0B48E; }
+.cover .links a { color: #F3BE9B; font-size: clamp(14px, 1.15vw, 16px); border-bottom-color: rgba(243,190,155,.6); }
+.cover .links span { color: #EFE6D6; }
+.cover .scroll-cue { color: #EFE6D6; }
+
 /* на вертикальном экране держим в кадре главное */
 @media (max-aspect-ratio: 1/1) {
   .scene .bg { object-position: var(--x, 50%) 50%; }
@@ -212,7 +223,7 @@ a.note:hover::after { transform: scale(1.35); }
 <div class="topbar" id="topbar"><span>Творчество к смерти</span><span id="chapterName"></span></div>
 
 <!-- Обложка -->
-<section class="scene pos-top" data-chapter="">
+<section class="scene pos-top cover" data-chapter="">
   <img class="bg" src="img/01-cover.webp" style="--x:32%" alt="Ночь. Бледный юноша стоит спиной на холме над городом, к нему тянутся цветные струи запахов">
   <div class="veil v-top"></div>
   <div class="content center">

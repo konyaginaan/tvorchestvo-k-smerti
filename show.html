@@ -90,6 +90,17 @@ h1 { font-size: 140px; line-height: 1.02; }
 .on .r.step { opacity: 0; transform: translateY(24px); filter: blur(6px); transition-delay: 0s; }
 .on .r.step.shown { opacity: 1; transform: none; filter: none; }
 
+/* обложка: под текстом мягкая тень, мелкие строки крупнее и светлее */
+.cover .content { position: relative; }
+.cover .content::before { content: ''; position: absolute; left: 50%; top: 42%; width: min(1500px, 120vw); height: 170%; transform: translate(-50%, -50%); background: radial-gradient(ellipse at center, rgba(14,11,9,.74) 0%, rgba(14,11,9,.55) 38%, rgba(14,11,9,0) 70%); z-index: -1; pointer-events: none; }
+.cover p, .cover h1 { text-shadow: 0 1px 3px rgba(0,0,0,.95), 0 2px 22px rgba(0,0,0,.9) !important; }
+.cover .author { color: #F2EADC; font-size: 26px; }
+.cover .hint { color: #EFE6D6; font-size: 22px; }
+.cover .hint i { color: #F0B48E; }
+.cover .links a { color: #F3BE9B; font-size: 22px; border-bottom-color: rgba(243,190,155,.6); }
+.cover .links span { color: #EFE6D6; }
+.cover .scroll-cue { color: #EFE6D6; }
+
 /* служебное */
 #bar { position: fixed; left: 0; bottom: 0; height: 3px; background: var(--accent); width: 0; transition: width .6s ease; z-index: 20; opacity: .7; }
 #hint { position: fixed; left: 50%; bottom: 26px; transform: translateX(-50%); z-index: 20; font-size: 14px; letter-spacing: 1px; color: var(--soft); background: rgba(14,11,9,.7); border: 1px solid var(--line); border-radius: 40px; padding: 8px 20px; transition: opacity 1s; white-space: nowrap; }
@@ -104,7 +115,7 @@ body.pointer #counter { opacity: .7; }
 <body>
 <div id="stage">
 
-<section class="scene slide top" data-label="Обложка">
+<section class="scene slide top cover" data-label="Обложка">
   <img class="bg" src="img/01-cover.webp" style="object-position:32% 50%" alt="Ночь. Бледный юноша стоит спиной на холме над городом, к нему тянутся цветные струи запахов">
   <div class="veil v-top"></div>
   <div class="content center">
