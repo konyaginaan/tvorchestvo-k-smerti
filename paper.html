@@ -40,7 +40,7 @@ body.pointer { cursor: default; }
 .pl.fig.in-left { transform: translateX(-1500px) rotate(-4deg); }  /* выезжает слева */
 .pl.fig.in-right { transform: translateX(1500px) rotate(4deg); }
 .pl.fig.in-up { transition: opacity .6s ease-out, transform 2.4s cubic-bezier(.3,1.35,.5,1); transition-delay: var(--in, .8s); }
-.pl.fig.in-walk { transition: none; }
+.pl.fig.in-walk { transition: none; animation-play-state: paused; }
 .on .pl.fig.in-walk { opacity: 1; animation-play-state: running; }
 .on .pl.fig { opacity: 1; transform: none; }
 .pl.fig.sway { animation: sway 7s ease-in-out infinite; animation-delay: var(--sd, 0s); }
@@ -232,7 +232,10 @@ SCENES.forEach((sc, i) => {
           return pct + '% { transform: translate(' + tx + 'px,' + ty + 'px) scale(' + w.s + '); z-index: ' + (j < f.through ? 1 : 4) + '; opacity: ' + (j === 0 ? 0 : 1) + '; }';
         }).join(' ');
         walkCss += '@keyframes ' + name + ' { ' + fr + ' }\n';
-        extra = 'animation:' + name + ' ' + (f.dur || 7) + 's cubic-bezier(.45,.05,.55,.95) var(--in,1s) 1 both paused' + (f.sway === false ? '' : ', sway 7s ease-in-out infinite') + ';';
+        const sw = f.sway !== false;
+        extra = 'animation-name:' + name + (sw ? ',sway' : '') + ';animation-duration:' + (f.dur || 7) + 's' + (sw ? ',7s' : '') +
+          ';animation-timing-function:cubic-bezier(.45,.05,.55,.95)' + (sw ? ',ease-in-out' : '') + ';animation-delay:var(--in,1s)' + (sw ? ',0s' : '') +
+          ';animation-iteration-count:1' + (sw ? ',infinite' : '') + ';animation-fill-mode:both' + (sw ? ',none' : '') + ';';
       }
       return '<img class="pl fig in-' + how + ' ' + (f.cut ? 'cut ' : '') + (f.sway === false || f.walk ? '' : 'sway') + '" data-d="' + (f.d ?? .6) + '" src="' + f.src + '" alt="" style="left:' + f.left + '%;top:' + f.top + '%;width:' + f.width + '%;z-index:' + (f.behind ? 1 : 4) + ';--in:' + (f.at ?? (1.0 + k * 0.45)) + 's;--sd:' + (-k * 1.7) + 's;' + extra + '">';
     };
