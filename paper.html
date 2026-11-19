@@ -91,6 +91,13 @@ h1 { font-size: 140px; line-height: 1.02; }
 #exit a { color: var(--soft); text-decoration: none; margin-right: 18px; }
 body.pointer #exit { opacity: .85; }
 .pl.layer { height: auto; pointer-events: none; transform-origin: 50% 100%; filter: drop-shadow(0 -6px 14px rgba(0,0,0,.4)); }
+.pl.fog { left: 0; top: 0; width: 100%; height: 100%; pointer-events: none; z-index: 3; mix-blend-mode: screen; }
+.pl.fog i { position: absolute; width: 34%; aspect-ratio: 1.6; margin: -10% 0 0 -17%; border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(214,206,232,.75), rgba(170,160,200,.35) 55%, transparent);
+  filter: blur(18px); opacity: 0; transform: scale(.3); }
+.on .pl.fog i { animation: dreamfog 9s ease-in-out forwards, fogdrift 7s ease-in-out infinite alternate; animation-delay: calc(.4s + var(--k) * .25s), calc(var(--k) * -1.3s); }
+@keyframes dreamfog { 0% { opacity: 0; transform: scale(.3); } 30% { opacity: .95; transform: scale(1.5); } 42% { opacity: 1; transform: scale(1.8); } 60% { opacity: .15; transform: scale(2.4); } 100% { opacity: .1; transform: scale(2.6); } }
+@keyframes fogdrift { from { translate: -3% 2%; } to { translate: 3% -3%; } }
 .pl.layer, .pl.front { z-index: 2; }
 .pl.front.bare { filter: none !important; }
 .pl.front.plain { filter: drop-shadow(0 0 1.5px rgba(241,232,215,.7)) drop-shadow(-8px 6px 14px rgba(0,0,0,.4)); }
@@ -176,10 +183,11 @@ const SCENES = [
     fronts: [{ src: P + '11-front.webp', left: -1, top: 62, width: 102, d: .85 }],
     html: '<div class="cap top right" style="width:28%; right:300px"><div class="ghosts r" style="--d:1.2s"><span>совесть</span><span>Бог</span><span>радость</span></div></div>' +
       '<div class="cap left" style="width:34%; bottom:170px"><p class="punch r step">Опыт, для которого нет языка, некому воспринять.</p></div>' },
-  { label: 'III. Второй крик', back: P + '12-back.webp', alt: 'Гора в разрезе, в тёплой полости спит свернувшийся человек',
-    figs: [{ src: P + '12-fig.webp', left: 37, top: 58, width: 26, d: .5, sway: false, behind: true }],
-    fronts: [{ src: P + '12-front.webp', left: -1, top: 52, width: 102, d: .8 }],
-    html: '<div class="cap top center"><p class="quote r" style="--d:1.2s">Не «во мне ничего нет», а «меня никто не воспринял — и я не могу воспринять себя»</p></div>' },
+  { label: 'III. Второй крик', back: P + '12b-back.webp', alt: 'Тёмная пещера: Гренуй проснулся от сна, в котором его окутал туман его собственного запаха',
+    figs: [{ src: P + '12b-fig.webp', left: 32, top: 30, width: 34, d: .5, sway: false, enter: 'up', at: 3.2 }],
+    fog: [[47, 52], [43, 60], [52, 58], [38, 66], [56, 66], [48, 44]],
+    html: '<div class="cap top center"><p class="quote r" style="--d:1.2s">Не «во мне ничего нет», а «меня никто не воспринял — и я не могу воспринять себя»</p></div>' +
+      '<div class="cap center"><p class="punch r step">Ему снится собственный запах — туман, которого он не чует и в котором задыхается.</p></div>' },
   { label: 'IV. Шедевр', back: P + '13-back.webp', alt: 'Мастерская ночью: ряд пустых пузырьков и один светящийся флакон',
     html: '<div class="cap top center"><p class="big r step" style="font-size:84px">Двадцать пять девушек.</p><p class="big r step" style="font-size:84px">Двадцать пять убийств.</p><p class="big r step" style="font-size:84px">Один флакон.</p></div>' },
   { label: 'IV. Казнь', back: P + '14c-back.webp', alt: 'Праздничная площадь в Грасе: на помосте Гренуй с платком, толпа в экстазе',
@@ -247,6 +255,9 @@ SCENES.forEach((sc, i) => {
         ? '<img class="pl layer" data-d="' + (fr.d ?? .9) + '" src="' + fr.src + '" alt="" style="left:' + fr.left + '%;top:' + fr.top + '%;width:' + fr.width + '%">'
         : '<div class="pl front' + (fr.plain ? ' plain' : '') + (fr.bare ? ' bare' : '') + '" data-d="' + (fr.d ?? .9) + '"><img src="' + sc.back + '" alt="" style="clip-path:polygon(' + fr.poly + ')"></div>';
     });
+    if (sc.fog) {
+      h += '<div class="pl fog" data-d=".55">' + sc.fog.map((p, k) => '<i style="left:' + p[0] + '%;top:' + p[1] + '%;--k:' + k + '"></i>').join('') + '</div>';
+    }
     if (sc.smell) {
       // запах — разноцветные светлячки, плывущие по путям от неё к нему (координаты путей в % кадра)
       const cols = ['#FFE08A', '#FFB8C8', '#BDF2D0', '#C9B8FF', '#FFC98A', '#FFF4C2'];
