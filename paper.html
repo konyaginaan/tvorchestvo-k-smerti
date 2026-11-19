@@ -35,11 +35,13 @@ body.pointer { cursor: default; }
 .pl.back { inset: 0; width: 100%; height: 100%; object-fit: cover; transform-origin: 50% 55%; }
 .pl.fig { height: auto; opacity: 0; transform-origin: 50% 100%;
   filter: drop-shadow(14px 16px 12px rgba(0,0,0,.55));
-  transition: opacity .5s ease-out, transform 1.5s cubic-bezier(.22,1.1,.36,1); transition-delay: var(--in, .8s); }
+  transition: opacity 1s ease-out, transform 3.6s cubic-bezier(.25,.8,.35,1); transition-delay: var(--in, .8s); }
 .pl.fig.in-up { transform: rotateX(86deg); }                       /* лежит на сгибе и встаёт, как в открытке */
 .pl.fig.in-left { transform: translateX(-1500px) rotate(-4deg); }  /* выезжает слева */
 .pl.fig.in-right { transform: translateX(1500px) rotate(4deg); }
-.pl.fig.in-up { transition: opacity .4s ease-out, transform 1.3s cubic-bezier(.3,1.45,.5,1); transition-delay: var(--in, .8s); }
+.pl.fig.in-up { transition: opacity .6s ease-out, transform 2.4s cubic-bezier(.3,1.35,.5,1); transition-delay: var(--in, .8s); }
+.pl.fig.in-walk { transition: none; }
+.on .pl.fig.in-walk { opacity: 1; animation-play-state: running; }
 .on .pl.fig { opacity: 1; transform: none; }
 .pl.fig.sway { animation: sway 7s ease-in-out infinite; animation-delay: var(--sd, 0s); }
 @keyframes sway { 0%, 100% { rotate: -1deg; } 50% { rotate: 1deg; } }
@@ -89,6 +91,8 @@ h1 { font-size: 140px; line-height: 1.02; }
 #exit a { color: var(--soft); text-decoration: none; margin-right: 18px; }
 body.pointer #exit { opacity: .85; }
 .pl.layer { height: auto; pointer-events: none; transform-origin: 50% 100%; filter: drop-shadow(0 -6px 14px rgba(0,0,0,.4)); }
+.pl.layer, .pl.front { z-index: 2; }
+.pl.front.plain { filter: drop-shadow(0 0 1.5px rgba(241,232,215,.7)) drop-shadow(-8px 6px 14px rgba(0,0,0,.4)); }
 .pl.front { left: 0; top: 0; width: 100%; height: 100%; pointer-events: none; transform-origin: 50% 100%;
   filter: drop-shadow(0 -2px 0 rgba(241,232,215,.85)) drop-shadow(0 -10px 14px rgba(0,0,0,.45)); }
 .pl.front img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
@@ -141,7 +145,11 @@ const SCENES = [
     figs: [{ src: P + '06-fig.webp', left: 54.5, top: 46, width: 17, d: .6, enter: 'up' }],
     html: '<div class="cap left" style="width:40%"><p class="quote r">«Искусство — гарантия душевного здоровья»</p><p class="punch r" style="--d:1.3s">— Луиза Буржуа</p><p class="punch r step" style="color:#E8DDC9">Живое произведение — это обращение.</p></div>' },
   { label: 'II. Ребёнок, который не пахнет', back: P + '07-back.webp', alt: 'Монастырские ворота: кормилица отдаёт младенца, монах принюхивается',
-    figs: [{ src: P + '07-fig-nurse.webp', left: 9, top: 41, width: 20, d: .65, enter: 'left', at: 1.0 }, { src: P + '07-fig-monk.webp', left: 29, top: 42, width: 20, d: .6, enter: 'right', at: 1.0 }],
+    figs: [{ src: P + '07-fig-nurse.webp', left: 9, top: 41, width: 20, d: .65, enter: 'left', at: 1.0 },
+           // монах выходит из глубины монастырского двора: маленький за стеной, у порога выходит вперёд
+           { src: P + '07-fig-monk.webp', left: 29, top: 42, width: 20, ar: .672, d: .65, at: 0.8, dur: 6.5, through: 2,
+             walk: [{ x: 53, y: 80, s: .4 }, { x: 53, y: 88, s: .62 }, { x: 39, y: 95, s: 1 }] }],
+    fronts: [{ poly: 'evenodd, 0% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 0%, 46% 88%, 46% 30%, 48% 24%, 51% 20%, 54.5% 18.5%, 58% 19%, 60% 21.5%, 60% 88%, 46% 88%, 0% 0%', d: 0, plain: true }],
     html: '<div class="cap right" style="width:44%"><p class="quote r">«Когда я смотрю, меня видят, значит, я существую»</p><p class="cite r" style="--d:1.3s">Винникотт</p><p class="punch r step">Гренуй не пахнет. Первое узнавание не состоялось.</p></div>' },
   { label: 'II. Использовали', back: P + '05-back.webp', dim: true,
     figs: [{ src: P + '08-fig-gaillard.webp', left: 10.6, top: 17, width: 16.2, d: .6, at: .9 }, { src: P + '08-fig-grimal.webp', left: 30.3, top: 17, width: 18.7, d: .6, at: 1.2 },
@@ -156,7 +164,9 @@ const SCENES = [
   { label: 'II. Частичные объекты', back: P + '09-back.webp', dim: true,
     html: '<div class="cap center" style="bottom:auto; top:220px"><p class="eyebrow r">мир частичных объектов</p><p class="quote r" style="--d:1.2s">Грудь вместо матери, запах вместо девушки</p><div class="labels r step" style="margin-top:50px">' + lab('Младенец', 'Сначала знает не мать, а грудь. Целого человека, которого можно любить и потерять, открывает позже.', 'у Мелани Кляйн') + lab('Гренуй', 'Так и остаётся у груди. Ему нужна не девушка, а её запах.', 'в романе') + '</div></div>' },
   { label: 'II. Выживание', back: P + '10-back.webp', alt: 'Дом на мосту рушится в реку, Гренуй уходит прочь',
-    figs: [{ src: P + '01-fig.webp', left: 7, top: 52, width: 6, d: .6 }],
+    // Гренуй входит из левого нижнего угла крупным планом и уходит по набережной вдаль
+    figs: [{ src: P + '01-fig.webp', left: 12.5, top: 47.5, width: 3, ar: .289, d: .6, at: .8, dur: 8, through: 0, sway: false,
+             walk: [{ x: 6, y: 128, s: 5.2 }, { x: 10, y: 92, s: 2.3 }, { x: 14, y: 66, s: 1 }] }],
     html: '<div class="cap top center" style="left:300px; right:300px"><p class="quote r">Другой становится настоящим, когда выживает</p></div>' +
       '<div class="cap center" style="left:260px; right:200px"><div class="labels r step">' + lab('Разрушаю', 'в фантазии, в ярости, в нападении') + lab('Выживает', 'не погибает и не мстит') + lab('Становится реальным', 'внешним, отдельным, другим') + '</div><p class="punch r step">В мире Гренуя не выживает никто.</p></div>' },
   { label: 'III. Язык, которого нет', back: P + '11-back.webp', alt: 'Двор с поленницей, маленький Гренуй нюхает щепку',
@@ -170,8 +180,9 @@ const SCENES = [
     html: '<div class="cap top center"><p class="quote r" style="--d:1.2s">Не «во мне ничего нет», а «меня никто не воспринял — и я не могу воспринять себя»</p></div>' },
   { label: 'IV. Шедевр', back: P + '13-back.webp', alt: 'Мастерская ночью: ряд пустых пузырьков и один светящийся флакон',
     html: '<div class="cap top center"><p class="big r step" style="font-size:84px">Двадцать пять девушек.</p><p class="big r step" style="font-size:84px">Двадцать пять убийств.</p><p class="big r step" style="font-size:84px">Один флакон.</p></div>' },
-  { label: 'IV. Казнь', back: P + '14b-back.webp', alt: 'Праздничная площадь в Грасе: на помосте Гренуй с платком, толпа в экстазе',
-    figs: [{ src: P + '14-fig-g.webp', left: 45.5, top: 22, width: 9, d: .45, enter: 'up' }, { src: P + '14-fig-crowd.webp', left: 10, top: 60, width: 80, d: .95, sway: false }],
+  { label: 'IV. Казнь', back: P + '14c-back.webp', alt: 'Праздничная площадь в Грасе: на помосте Гренуй с платком, толпа в экстазе',
+    figs: [{ src: P + '14-fig-g.webp', left: 34, top: 20, width: 9, d: 0, enter: 'up', behind: true }, { src: P + '14-fig-crowd.webp', left: 10, top: 60, width: 80, d: .95, sway: false }],
+    fronts: [{ poly: '30% 80%, 30% 51.5%, 33% 49%, 59% 49%, 61% 51.5%, 61% 80%', d: 0, plain: true }],
     html: '<div class="cap top center"><p class="quote r" style="--d:1.6s">Та же сила, что движет любым художником, — но обращённая против субъекта</p></div>' },
   { label: 'IV. Наутро', back: P + '15-back.webp', alt: 'Пустая площадь на рассвете после праздника',
     html: '<div class="cap top center"><p class="quote r">А наутро — стыд, молчание и забвение</p></div>' +
@@ -181,7 +192,7 @@ const SCENES = [
     fronts: [{ src: P + '12-front.webp', left: -1, top: 52, width: 102, d: .8 }],
     html: '<div class="cap top center"><p class="quote r" style="--d:1.2s">Его вобрали. Но вобрали только запах.</p></div>' +
       '<div class="cap" style="left:120px; right:120px"><div class="labels r step" style="justify-content:space-between">' + lab('Пещера', 'семь лет внутри горы — почти буквальная утроба', 'Ференци, «Таласса», 1924') + '<div style="flex:1.4"></div>' + lab('Трапеза', 'где не родился символ, «быть принятым» — значит «быть съеденным»', 'Сегал, 1957') + '</div></div>' },
-  { label: 'VI. Так творчество ли это?', back: P + '14b-back.webp', dim: true,
+  { label: 'VI. Так творчество ли это?', back: P + '14c-back.webp', dim: true,
     html: '<div class="cap center" style="bottom:auto; top:250px"><p class="quote r">Творчество ли это?</p><div class="labels r step" style="margin-top:50px">' + lab('Творчество к жизни', 'оставляет другому свободу ответить и меняет обоих') + lab('Творчество к смерти', 'отменяет и другого, и самого автора') + '</div></div>' },
   { label: 'Эпилог', back: P + '16-back.webp', alt: 'Вечерний кабинет аналитика, между креслами дымка',
     html: '<div class="cap top center"><p class="quote r">Кажется, что переноса нет</p><div class="chips r" style="--d:1.3s; justify-content:center"><span class="chip">сонливость</span><span class="chip">пустота</span><span class="chip">растерянность</span></div></div>' +
@@ -198,6 +209,7 @@ const stage = document.getElementById('stage');
 const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 // собираем слайды
+let walkCss = '';
 SCENES.forEach((sc, i) => {
   const s = document.createElement('section');
   s.className = 'slide' + (sc.end ? ' end' : '');
@@ -207,18 +219,47 @@ SCENES.forEach((sc, i) => {
     h += '<div class="pt"><div class="pt-stage">';
     h += '<img class="pl back' + (sc.dim ? ' dim' : '') + '" data-d="0" src="' + sc.back + '" alt="' + (sc.alt || '') + '">';
     const fig = (f, k) => {
-      const how = f.enter || (f.left + f.width / 2 < 30 ? 'left' : f.left + f.width / 2 > 70 ? 'right' : 'up');
-      return '<img class="pl fig in-' + how + ' ' + (f.cut ? 'cut ' : '') + (f.sway === false ? '' : 'sway') + '" data-d="' + (f.d ?? .6) + '" src="' + f.src + '" alt="" style="left:' + f.left + '%;top:' + f.top + '%;width:' + f.width + '%;--in:' + (f.at ?? (1.0 + k * 0.45)) + 's;--sd:' + (-k * 1.7) + 's">';
+      const how = f.walk ? 'walk' : (f.enter || (f.left + f.width / 2 < 30 ? 'left' : f.left + f.width / 2 > 70 ? 'right' : 'up'));
+      let extra = '';
+      if (f.walk) {
+        // путь — точки «низ-центр» фигуры в % кадра и масштаб; последняя точка — её место.
+        // До точки f.through фигура идёт ЗА передним планом, после — перед ним.
+        const H = f.width * 1920 / (f.ar || .67) / 1080, bx = f.left + f.width / 2, by = f.top + H;
+        const name = 'walk' + i + '_' + k, n = f.walk.length - 1;
+        const fr = f.walk.map((w, j) => {
+          const pct = (j / n * 100).toFixed(1);
+          const tx = ((w.x - bx) * 19.2).toFixed(0), ty = ((w.y - by) * 10.8).toFixed(0);
+          return pct + '% { transform: translate(' + tx + 'px,' + ty + 'px) scale(' + w.s + '); z-index: ' + (j < f.through ? 1 : 4) + '; opacity: ' + (j === 0 ? 0 : 1) + '; }';
+        }).join(' ');
+        walkCss += '@keyframes ' + name + ' { ' + fr + ' }\n';
+        extra = 'animation:' + name + ' ' + (f.dur || 7) + 's cubic-bezier(.45,.05,.55,.95) var(--in,1s) 1 both paused' + (f.sway === false ? '' : ', sway 7s ease-in-out infinite') + ';';
+      }
+      return '<img class="pl fig in-' + how + ' ' + (f.cut ? 'cut ' : '') + (f.sway === false || f.walk ? '' : 'sway') + '" data-d="' + (f.d ?? .6) + '" src="' + f.src + '" alt="" style="left:' + f.left + '%;top:' + f.top + '%;width:' + f.width + '%;z-index:' + (f.behind ? 1 : 4) + ';--in:' + (f.at ?? (1.0 + k * 0.45)) + 's;--sd:' + (-k * 1.7) + 's;' + extra + '">';
     };
     const figs = sc.figs || [];
     figs.forEach((f, k) => { if (f.behind) h += fig(f, k); });
     (sc.fronts || []).forEach(fr => {
       h += fr.src
         ? '<img class="pl layer" data-d="' + (fr.d ?? .9) + '" src="' + fr.src + '" alt="" style="left:' + fr.left + '%;top:' + fr.top + '%;width:' + fr.width + '%">'
-        : '<div class="pl front" data-d="' + (fr.d ?? .9) + '"><img src="' + sc.back + '" alt="" style="clip-path:polygon(' + fr.poly + ')"></div>';
+        : '<div class="pl front' + (fr.plain ? ' plain' : '') + '" data-d="' + (fr.d ?? .9) + '"><img src="' + sc.back + '" alt="" style="clip-path:polygon(' + fr.poly + ')"></div>';
     });
-    if (sc.smell) h += '<svg class="pl smell" data-d="' + (sc.smellD ?? .55) + '" viewBox="0 0 100 100" preserveAspectRatio="none"><defs><linearGradient id="sg' + i + '" x1="1" x2="0"><stop offset="0" stop-color="#F6D27A"/><stop offset=".6" stop-color="#E9A27C"/><stop offset="1" stop-color="#F4C7B8" stop-opacity=".55"/></linearGradient></defs>' +
-      sc.smell.map((d, k) => '<path class="edge" d="' + d + '" pathLength="100" style="--k:' + k + '"/><path class="rib" d="' + d + '" pathLength="100" stroke="url(#sg' + i + ')" style="--k:' + k + '"/>').join('') + '</svg>';
+    if (sc.smell) {
+      // запах — разноцветные светлячки, плывущие по путям от неё к нему (координаты путей в % кадра)
+      const cols = ['#FFE08A', '#FFB8C8', '#BDF2D0', '#C9B8FF', '#FFC98A', '#FFF4C2'];
+      let rnd = 7 + i; const R = () => (rnd = (rnd * 9301 + 49297) % 233280) / 233280;
+      let defs = '<filter id="glow' + i + '" x="-3" y="-3" width="7" height="7"><feGaussianBlur stdDeviation="1.1" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>', bugs = '';
+      sc.smell.forEach((d, k) => {
+        for (let j = 0; j < 13; j++) {
+          let n = 0;
+          const jd = d.replace(/-?\d+(\.\d+)?/g, v => { const isX = (n++ % 2 === 0); const off = (R() - .5) * 3.2; return ((parseFloat(v) + off) * (isX ? 1.7778 : 1)).toFixed(2); });
+          const id = 'fp' + i + '_' + k + '_' + j, dur = (5.5 + R() * 3).toFixed(2), beg = (-R() * 9).toFixed(2), r = (.6 + R() * .7).toFixed(2), c = cols[Math.floor(R() * cols.length)];
+          defs += '<path id="' + id + '" d="' + jd + '"/>';
+          bugs += '<circle r="' + r + '" fill="' + c + '" filter="url(#glow' + i + ')"><animateMotion dur="' + dur + 's" begin="' + beg + 's" repeatCount="indefinite"><mpath href="#' + id + '"/></animateMotion>' +
+            '<animate attributeName="opacity" values="0;1;.35;1;.6;1;0" dur="' + dur + 's" begin="' + beg + 's" repeatCount="indefinite"/></circle>';
+        }
+      });
+      h += '<svg class="pl smell" data-d="' + (sc.smellD ?? .55) + '" viewBox="0 0 177.78 100" preserveAspectRatio="none" style="z-index:3"><defs>' + defs + '</defs>' + bugs + '</svg>';
+    }
     figs.forEach((f, k) => { if (!f.behind) h += fig(f, k); });
     h += '</div></div>';
   }
@@ -226,6 +267,7 @@ SCENES.forEach((sc, i) => {
   s.innerHTML = h;
   stage.appendChild(s);
 });
+{ const st = document.createElement('style'); st.textContent = walkCss; document.head.appendChild(st); }
 const slides = [...stage.querySelectorAll('.slide')];
 
 // задник вписывается в кадр целиком по ширине или высоте
@@ -293,6 +335,7 @@ function show(i, fromEnd) {
     }, 1650);
   } else slides.forEach(s => { if (s !== nextS) s.classList.remove('on'); });
   nextS.classList.add('current'); nextS.classList.remove('on'); void nextS.offsetWidth; nextS.classList.add('on');
+  nextS.querySelectorAll('.in-walk').forEach(e => e.getAnimations().forEach(a => { if (a.animationName !== 'sway') a.currentTime = 0; }));
   cur = i; t0 = 0;
   const st = steps(slides[i]);
   stepIdx = fromEnd ? st.length : 0;
