@@ -114,7 +114,7 @@ function buildFx() {
   document.querySelectorAll('.scene .bg').forEach(bg => {
     if (bg.closest('.chapter-title')) return;
     const m = (bg.getAttribute('src') || '').match(/(\d\d-[\w-]+)\.(webp|mp4)/);
-    const cfg = m && FX[m[1]]; if (!cfg) return;
+    const cfg = m && (FX[m[1]] || FX[m[1].replace(/-bg$/, '')]); if (!cfg) return;
     const st = document.createElement('div'); st.className = 'fx';
     (cfg.glows || []).forEach(g => {
       const el = document.createElement('i'); el.className = 'glow ' + g.k;

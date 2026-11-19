@@ -138,7 +138,11 @@ body.pointer #counter { opacity: .7; }
 <div id="stage">
 
 <section class="scene slide top cover" data-label="Обложка">
-  <img class="bg" src="img/01-cover.webp" style="object-position:32% 50%" alt="Ночь. Бледный юноша стоит спиной на холме над городом, к нему тянутся цветные струи запахов">
+  <div class="theatre" data-x="32"><div class="t-stage">
+    <img class="bg t-bg" src="img/01-cover-bg.webp" alt="Ночь. Бледный юноша стоит спиной на холме над городом, к нему тянутся цветные струи запахов">
+    <img class="t-fig" src="img/01-cover-fig.webp" style="left:27.79%; top:39.68%; width:10.15%" alt="">
+    <div class="t-front"><img src="img/01-cover-bg.webp" alt=""></div>
+  </div></div>
   <div class="veil v-top"></div>
   <div class="content center">
     <p class="eyebrow r" style="--d:.2s">доклад по роману Патрика Зюскинда «Парфюмер»</p>
@@ -351,6 +355,7 @@ body.pointer #counter { opacity: .7; }
 <div id="hint">→ или пробел — дальше · ← — назад · F — во весь экран · 0 — в начало · Esc — к статье</div>
 
 <script>window.FX_MODE = 'show';</script>
+<script src="theatre.js"></script>
 <script src="fx.js"></script>
 <script src="typo.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>

@@ -243,7 +243,11 @@ a.note:hover::after { transform: scale(1.35); }
 
 <!-- Обложка -->
 <section class="scene pos-top cover" data-chapter="">
-  <img class="bg" src="img/01-cover.webp" style="--x:32%" alt="Ночь. Бледный юноша стоит спиной на холме над городом, к нему тянутся цветные струи запахов">
+  <div class="theatre" data-x="32"><div class="t-stage">
+    <img class="bg t-bg" src="img/01-cover-bg.webp" alt="Ночь. Бледный юноша стоит спиной на холме над городом, к нему тянутся цветные струи запахов">
+    <img class="t-fig" src="img/01-cover-fig.webp" style="left:27.79%; top:39.68%; width:10.15%" alt="">
+    <div class="t-front"><img src="img/01-cover-bg.webp" alt=""></div>
+  </div></div>
   <div class="veil v-top"></div>
   <div class="content center">
     <p class="eyebrow r">доклад по роману Патрика Зюскинда «Парфюмер»</p>
@@ -554,6 +558,7 @@ a.note:hover::after { transform: scale(1.35); }
 
 <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
 <script src="notes.js"></script>
+<script src="theatre.js"></script>
 <script src="fx.js"></script>
 <script src="typo.js"></script>
 <script>
