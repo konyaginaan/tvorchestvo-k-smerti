@@ -92,6 +92,7 @@ h1 { font-size: 140px; line-height: 1.02; }
 body.pointer #exit { opacity: .85; }
 .pl.layer { height: auto; pointer-events: none; transform-origin: 50% 100%; filter: drop-shadow(0 -6px 14px rgba(0,0,0,.4)); }
 .pl.layer, .pl.front { z-index: 2; }
+.pl.front.bare { filter: none !important; }
 .pl.front.plain { filter: drop-shadow(0 0 1.5px rgba(241,232,215,.7)) drop-shadow(-8px 6px 14px rgba(0,0,0,.4)); }
 .pl.front { left: 0; top: 0; width: 100%; height: 100%; pointer-events: none; transform-origin: 50% 100%;
   filter: drop-shadow(0 -2px 0 rgba(241,232,215,.85)) drop-shadow(0 -10px 14px rgba(0,0,0,.45)); }
@@ -147,9 +148,10 @@ const SCENES = [
   { label: 'II. Ребёнок, который не пахнет', back: P + '07-back.webp', alt: 'Монастырские ворота: кормилица отдаёт младенца, монах принюхивается',
     figs: [{ src: P + '07-fig-nurse.webp', left: 9, top: 41, width: 20, d: .65, enter: 'left', at: 1.0 },
            // монах выходит из глубины монастырского двора: маленький за стеной, у порога выходит вперёд
-           { src: P + '07-fig-monk.webp', left: 29, top: 42, width: 20, ar: .672, d: .65, at: 0.8, dur: 6.5, through: 2,
-             walk: [{ x: 53, y: 80, s: .4 }, { x: 53, y: 88, s: .62 }, { x: 39, y: 95, s: 1 }] }],
-    fronts: [{ poly: 'evenodd, 0% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 0%, 46% 88%, 46% 30%, 48% 24%, 51% 20%, 54.5% 18.5%, 58% 19%, 60% 21.5%, 60% 88%, 46% 88%, 0% 0%', d: 0, plain: true }],
+           { src: P + '07-fig-monk.webp', left: 29, top: 42, width: 20, ar: .672, d: 0, at: 1.2, dur: 4.8, through: 99,
+             walk: [{ x: 72, y: 94.9, s: 1 }, { x: 39, y: 94.9, s: 1 }] }],
+    // правая створка ворот и стена за ней — монах стоит за ней и выдвигается из-за двери
+    fronts: [{ poly: '59.6% 0%, 100% 0%, 100% 100%, 59.6% 100%', d: 0, plain: true, bare: true }],
     html: '<div class="cap right" style="width:44%"><p class="quote r">«Когда я смотрю, меня видят, значит, я существую»</p><p class="cite r" style="--d:1.3s">Винникотт</p><p class="punch r step">Гренуй не пахнет. Первое узнавание не состоялось.</p></div>' },
   { label: 'II. Использовали', back: P + '05-back.webp', dim: true,
     figs: [{ src: P + '08-fig-gaillard.webp', left: 10.6, top: 17, width: 16.2, d: .6, at: .9 }, { src: P + '08-fig-grimal.webp', left: 30.3, top: 17, width: 18.7, d: .6, at: 1.2 },
@@ -187,7 +189,7 @@ const SCENES = [
     html: '<div class="cap top center"><p class="quote r">А наутро — стыд, молчание и забвение</p></div>' +
       '<div class="cap center"><div class="labels r step">' + lab('Захват, а не опыт', 'чужой образ встаёт на место твоего идеала', 'Фрейд, 1921') + lab('Ложное творение', 'двадцать пять жизней — один запах', 'Шассге-Смиргель, 1984') + lab('Жадность без благодарности', 'вычерпанное — не дар, а оружие', 'Кляйн, 1957') + '</div></div>' },
   { label: 'V. Назад, в утробу', back: P + '12-back.webp', alt: 'Гора-утроба, внутри свернулся человек',
-    figs: [{ src: P + '12-fig.webp', left: 40, top: 64, width: 20, d: .5, sway: false, behind: true }],
+    figs: [{ src: P + '12-fig.webp', left: 37, top: 58, width: 26, d: .5, sway: false, behind: true }],
     fronts: [{ src: P + '12-front.webp', left: -1, top: 52, width: 102, d: .8 }],
     html: '<div class="cap top center"><p class="quote r" style="--d:1.2s">Его вобрали. Но вобрали только запах.</p></div>' +
       '<div class="cap" style="left:120px; right:120px"><div class="labels r step" style="justify-content:space-between">' + lab('Пещера', 'семь лет внутри горы — почти буквальная утроба', 'Ференци, «Таласса», 1924') + '<div style="flex:1.4"></div>' + lab('Трапеза', 'где не родился символ, «быть принятым» — значит «быть съеденным»', 'Сегал, 1957') + '</div></div>' },
@@ -243,7 +245,7 @@ SCENES.forEach((sc, i) => {
     (sc.fronts || []).forEach(fr => {
       h += fr.src
         ? '<img class="pl layer" data-d="' + (fr.d ?? .9) + '" src="' + fr.src + '" alt="" style="left:' + fr.left + '%;top:' + fr.top + '%;width:' + fr.width + '%">'
-        : '<div class="pl front' + (fr.plain ? ' plain' : '') + '" data-d="' + (fr.d ?? .9) + '"><img src="' + sc.back + '" alt="" style="clip-path:polygon(' + fr.poly + ')"></div>';
+        : '<div class="pl front' + (fr.plain ? ' plain' : '') + (fr.bare ? ' bare' : '') + '" data-d="' + (fr.d ?? .9) + '"><img src="' + sc.back + '" alt="" style="clip-path:polygon(' + fr.poly + ')"></div>';
     });
     if (sc.smell) {
       // запах — разноцветные светлячки, плывущие по путям от неё к нему (координаты путей в % кадра)
