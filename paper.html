@@ -98,7 +98,7 @@ body.pointer #home { opacity: .9; }
 .on .pl.fog i { animation: dreamfog 9s ease-in-out forwards, fogdrift 7s ease-in-out infinite alternate; animation-delay: calc(.4s + var(--k) * .25s), calc(var(--k) * -1.3s); }
 @keyframes dreamfog { 0% { opacity: 0; transform: scale(.3); } 30% { opacity: .95; transform: scale(1.5); } 42% { opacity: 1; transform: scale(1.8); } 60% { opacity: .15; transform: scale(2.4); } 100% { opacity: .1; transform: scale(2.6); } }
 @keyframes fogdrift { from { translate: -3% 2%; } to { translate: 3% -3%; } }
-canvas.smoke { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 5; pointer-events: none; opacity: 0; transition: opacity 2.5s ease .3s; }
+canvas.smoke { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 5; pointer-events: none; opacity: 0; transition: opacity 1.2s ease; }
 .on canvas.smoke { opacity: 1; }
 .pl.layer, .pl.front { z-index: 2; }
 .pl.front.bare { filter: none !important; }
@@ -206,7 +206,7 @@ const SCENES = [
     html: '<div class="cap top right" style="width:28%; right:300px"><div class="ghosts r" style="--d:1.2s"><span>совесть</span><span>Бог</span><span>радость</span></div></div>' +
       '<div class="cap left" style="width:34%; bottom:170px"><p class="punch r step">Опыт, для которого нет языка, некому воспринять.</p></div>' },
   { label: 'III. Второй крик', back: P + '12b-back.webp', alt: 'Тёмная пещера: Гренуй проснулся от сна, в котором его окутал туман его собственного запаха',
-    figs: [{ src: P + '12b-fig.webp', left: 32, top: 30, width: 34, d: .5, sway: false, enter: 'up', at: 3.2 }],
+    figs: [{ src: P + '12b-fig.webp', left: 32, top: 30, width: 34, d: .5, sway: false, enter: 'up', at: 5.5 }],
     smoke: { tint: [205, 196, 230], src: [[50, 72], [42, 70], [58, 70]] },
     html: '<div class="cap top center"><p class="quote r" style="--d:1.2s">Не «во мне ничего нет», а «меня никто не воспринял — и я не могу воспринять себя»</p></div>' +
       '<div class="cap center"><p class="punch r step">Ему снится собственный запах — туман, которого он не чует и в котором задыхается.</p></div>' },
@@ -440,8 +440,9 @@ requestAnimationFrame(frame);
     const dt = Math.min(.05, (now - (last || now)) / 1000); last = now;
     scenes.forEach(o => {
       if (!o.slide.classList.contains('current') || calm) { o.ps.length = 0; return; }
-      if (!o.ps.length) for (let k = 0; k < 70; k++) spawn(o, true);
-      while (o.ps.length < 110) spawn(o);
+      if (!o.ps.length) { o.t0 = now; for (let k = 0; k < 140; k++) spawn(o, true); }
+      const age = (now - o.t0) / 1000;
+      while (o.ps.length < (age < 5 ? 170 : 110)) spawn(o);
       const g = o.cv.getContext('2d'); g.clearRect(0, 0, W, H);
       o.ps = o.ps.filter(p => {
         p.life += dt; if (p.life > p.max) return false;
