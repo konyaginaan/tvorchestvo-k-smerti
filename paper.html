@@ -119,7 +119,9 @@ body.pointer #home { opacity: .9; }
 
 /* режим правки */
 #ed-open { position: fixed; top: 14px; right: 18px; z-index: 20; font: 15px 'Lora', Georgia, serif; color: var(--soft); background: rgba(14,11,9,.55); border: 1px solid rgba(227,167,129,.35); border-radius: 40px; padding: 6px 16px; cursor: pointer; opacity: 0; transition: opacity .6s; }
-body.pointer #ed-open { opacity: .9; }
+body.pointer.can-edit #ed-open { opacity: .9; }
+body:not(.can-edit) #ed-open { display: none; }
+#ed-state { font-weight: 400; color: var(--rust); min-width: 150px; }
 #edbar { position: fixed; left: 50%; top: 12px; transform: translateX(-50%); z-index: 30; display: none; gap: 10px; align-items: center; font: 14px 'Lora', Georgia, serif; color: var(--ink); background: #EDE3CF; border-radius: 12px; padding: 8px 12px; box-shadow: 0 10px 30px rgba(0,0,0,.5); white-space: nowrap; }
 #edbar button { font: inherit; background: #fff; border: 1px solid #CDB894; border-radius: 8px; padding: 4px 10px; cursor: pointer; }
 #edbar #ed-done { background: var(--rust); color: #fff; border-color: var(--rust); }
@@ -135,11 +137,15 @@ body.editing .ed-grip { display: block; }
 </style>
 </head>
 <body>
+<script>
+// личная ссылка …/paper.html#k=КЛЮЧ включает правку на этом устройстве; ключ запоминается, из адреса убирается
+try { const m = location.hash.match(/k=([\w-]+)/); if (m) { localStorage.setItem('paper-key', m[1]); history.replaceState(null, '', location.pathname); } } catch (e) {}
+</script>
 <div id="stage"></div>
 <div id="bar"></div>
 <button id="home" title="К первому слайду (0)">↺ в начало</button>
-<div id="edbar"><span>Правка: щёлкните по тексту, чтобы изменить · тяните за ✥, чтобы переставить · ← → листать</span>
-<button id="ed-save">Скачать правки</button><button id="ed-reset">Сбросить этот слайд</button><button id="ed-done">Готово</button></div>
+<div id="edbar"><span>Щёлкните по тексту и правьте · Enter — сохранить · тяните за ✥ · ← → листать</span>
+<b id="ed-state"></b><button id="ed-reset">Сбросить этот слайд</button><button id="ed-done">Готово</button></div>
 <button id="ed-open" title="Режим правки (E)">✎ править</button>
 <div id="hint">→ или пробел — дальше · ← — назад · F — во весь экран · 0 — в начало</div>
 
@@ -399,8 +405,12 @@ requestAnimationFrame(frame);
 
 <script>
 // ===== режим правки: тексты и положение подписей, хранятся по номеру слайда =====
-const ED_KEY = 'paper-edits-v1';
-let edits = {};
+const ED_KEY = 'paper-edits-v1', API = 'https://tvorchestvo-edits.norevia.workers.dev/api/';
+let edits = {}, saveT = 0;
+// личная ссылка …/paper.html#k=КЛЮЧ включает правку на этом устройстве
+let editKey = '';
+try { editKey = localStorage.getItem('paper-key') || ''; } catch (e) {}
+if (editKey) document.body.classList.add('can-edit');
 const capsOf = s => [...s.querySelectorAll(':scope > .cap')];
 slides.forEach(s => {
   s.querySelectorAll('.cap p, .cap h1, .cap .label b, .cap .label span, .cap .label small, .cap .ghosts span, .cap .chip').forEach((el, n) => el.dataset.ek = n);
@@ -413,15 +423,33 @@ function applyEdits() {
     capsOf(s).forEach((c, n) => { const m = (e.m || {})[n]; c.style.translate = m ? m[0] + 'px ' + m[1] + 'px' : ''; });
   });
 }
-function saveLocal() { try { localStorage.setItem(ED_KEY, JSON.stringify(edits)); } catch (e) {} }
+const edState = t => { const el = document.getElementById('ed-state'); if (el) el.textContent = t; };
+// черновик лежит в браузере, пока сервер не подтвердил сохранение
+function saveLocal() {
+  try { localStorage.setItem(ED_KEY, JSON.stringify(edits)); } catch (e) {}
+  edState('сохраняю…'); clearTimeout(saveT); saveT = setTimeout(pushEdits, 800);
+}
+async function pushEdits() {
+  clearTimeout(saveT);
+  try {
+    const r = await fetch(API + 'edits', { method: 'PUT', headers: { Authorization: 'Bearer ' + editKey, 'Content-Type': 'application/json' }, body: JSON.stringify(edits) });
+    if (!r.ok) throw new Error(r.status);
+    try { localStorage.removeItem(ED_KEY); } catch (e) {}
+    edState('✓ сохранено на сайте');
+  } catch (e) { edState(String(e.message) === '401' ? '⚠ ключ не подходит' : '⚠ нет связи — правки ждут в браузере'); }
+}
 async function loadEdits() {
-  try { const r = await fetch('paper-edits.json?x=' + Date.now()); if (r.ok) edits = await r.json(); } catch (e) {}
-  try { const l = JSON.parse(localStorage.getItem(ED_KEY) || 'null'); if (l) edits = l; } catch (e) {}
+  try { const r = await fetch(API + 'edits'); if (r.ok) edits = (await r.json()).edits || {}; } catch (e) {}
+  let draft = null;
+  try { draft = JSON.parse(localStorage.getItem(ED_KEY) || 'null'); } catch (e) {}
+  if (draft && editKey) { edits = draft; pushEdits(); }
   applyEdits();
 }
 loadEdits();
 function toggleEdit(on) {
+  if (!editKey) return;
   on = on ?? !document.body.classList.contains('editing');
+  if (!on) pushEdits();
   document.body.classList.toggle('editing', on);
   document.querySelectorAll('[data-ek]').forEach(el => el.contentEditable = on ? 'true' : 'false');
   if (!on && document.activeElement) document.activeElement.blur();
@@ -431,6 +459,11 @@ document.addEventListener('input', e => {
   const i = slides.indexOf(el.closest('.slide'));
   ((edits[i] ||= {}).t ||= {})[el.dataset.ek] = el.innerHTML; saveLocal();
 });
+// Enter — сохранить и закончить правку этого текста; Shift+Enter — новая строка
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.shiftKey && e.target.closest && e.target.closest('[data-ek]')) { e.preventDefault(); e.target.blur(); pushEdits(); }
+  if (e.key === 'Escape' && document.body.classList.contains('editing')) toggleEdit(false);
+}, true);
 document.addEventListener('paste', e => {   // вставлять только текст, без чужого оформления
   if (!e.target.closest('[data-ek]')) return;
   e.preventDefault(); document.execCommand('insertText', false, (e.clipboardData || window.clipboardData).getData('text/plain'));
@@ -456,14 +489,10 @@ document.getElementById('ed-done').onclick = e => { e.stopPropagation(); toggleE
 document.getElementById('ed-reset').onclick = e => {
   e.stopPropagation();
   if (!confirm('Вернуть исходные тексты и положение на этом слайде?')) return;
-  delete edits[cur]; saveLocal(); location.reload();
+  delete edits[cur]; try { localStorage.setItem(ED_KEY, JSON.stringify(edits)); } catch (e) {}
+  pushEdits().then(() => location.reload());
 };
-document.getElementById('ed-save').onclick = e => {
-  e.stopPropagation();
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(new Blob([JSON.stringify(edits, null, 1)], { type: 'application/json' }));
-  a.download = 'paper-edits.json'; a.click();
-};
+
 </script>
 <script src="typo.js"></script>
 </body>
