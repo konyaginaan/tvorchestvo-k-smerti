@@ -200,6 +200,8 @@ const SCENES = [
       '<div class="cap center" style="left:520px; right:120px"><div class="labels r step">' + lab('Разрушаю', 'в фантазии, в ярости, в нападении') + lab('Выживает', 'не погибает и не мстит') + lab('Становится реальным', 'внешним, отдельным, другим') + '</div><p class="punch r step">В мире Гренуя не выживает никто.</p></div>' },
   { label: 'III. Язык, которого нет', back: P + '11-back.webp', alt: 'Двор с поленницей, маленький Гренуй нюхает щепку',
     figs: [{ src: P + '11-fig.webp', left: 40, top: 43, width: 17, d: .6, behind: true }],
+    // запахи двора — светлячками от поленницы, смолы, травы и белья к его носу
+    smell: ['M 22 18 C 30 30, 42 30, 50.5 52', 'M 37 16 C 40 34, 48 38, 50.5 52', 'M 52 30 C 56 40, 50 46, 50.5 52', 'M 82 45 C 70 40, 60 48, 50.5 52', 'M 27 58 C 36 50, 44 56, 50.5 52'],
     fronts: [{ src: P + '11-front.webp', left: -1, top: 62, width: 102, d: .85 }],
     html: '<div class="cap top right" style="width:28%; right:300px"><div class="ghosts r" style="--d:1.2s"><span>совесть</span><span>Бог</span><span>радость</span></div></div>' +
       '<div class="cap left" style="width:34%; bottom:170px"><p class="punch r step">Опыт, для которого нет языка, некому воспринять.</p></div>' },
