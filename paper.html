@@ -87,9 +87,9 @@ h1 { font-size: 140px; line-height: 1.02; }
 #bar { position: fixed; left: 0; bottom: 0; height: 3px; background: var(--accent); width: 0; transition: width .6s ease; z-index: 20; opacity: .7; }
 #hint { position: fixed; left: 50%; bottom: 26px; transform: translateX(-50%); z-index: 20; font-size: 14px; color: var(--soft); background: rgba(14,11,9,.7); border: 1px solid rgba(227,167,129,.35); border-radius: 40px; padding: 8px 20px; transition: opacity 1s; white-space: nowrap; }
 #hint.hide { opacity: 0; }
-#exit { position: fixed; top: 14px; left: 18px; z-index: 20; font-size: 14px; letter-spacing: 2px; text-transform: uppercase; opacity: 0; transition: opacity .6s; }
-#exit a { color: var(--soft); text-decoration: none; margin-right: 18px; }
-body.pointer #exit { opacity: .85; }
+#home { position: fixed; top: 14px; left: 18px; z-index: 20; font: 15px 'Lora', Georgia, serif; letter-spacing: 1px; color: var(--soft); background: rgba(14,11,9,.55); border: 1px solid rgba(227,167,129,.35); border-radius: 40px; padding: 6px 16px; cursor: pointer; opacity: 0; transition: opacity .6s; }
+#home:hover { color: var(--accent); }
+body.pointer #home { opacity: .9; }
 .pl.layer { height: auto; pointer-events: none; transform-origin: 50% 100%; filter: drop-shadow(0 -6px 14px rgba(0,0,0,.4)); }
 .pl.fog { left: 0; top: 0; width: 100%; height: 100%; pointer-events: none; z-index: 3; mix-blend-mode: screen; }
 .pl.fog i { position: absolute; width: 34%; aspect-ratio: 1.6; margin: -10% 0 0 -17%; border-radius: 50%;
@@ -121,7 +121,7 @@ body.pointer #exit { opacity: .85; }
 <body>
 <div id="stage"></div>
 <div id="bar"></div>
-<nav id="exit"><a href="article.html">← статья</a><a href="./">главная</a><a href="show.html">акварельный показ</a></nav>
+<button id="home" title="К первому слайду (0)">↺ в начало</button>
 <div id="hint">→ или пробел — дальше · ← — назад · F — во весь экран · 0 — в начало</div>
 
 <script>
@@ -203,7 +203,7 @@ const SCENES = [
   { label: 'Финал', back: P + '17-back.webp', alt: 'Кладбище на рассвете, пепел костра и пустой флакон',
     html: '<div class="cap top center"><p class="punch r" style="color:#E8DDC9">Гренуй ни к кому не пришёл. Пациент — пришёл.</p><p class="quote r step" style="margin-top:24px">Наша работа — учуять того, кто сам себя не чует.</p></div>' },
   { label: 'Спасибо', end: true,
-    html: '<div><p class="eyebrow r">статья, заметки и источники</p><p class="quote r" style="--d:1.2s">Творчество к смерти</p><div class="qr r" style="--d:1.4s" id="qr"></div><p class="url r" style="--d:1.6s">konyaginaan.github.io/tvorchestvo-k-smerti</p><p class="author r" style="--d:1.8s">Конягина Анастасия</p><p class="r" style="--d:2s"><button class="btn" id="restart">↺ в начало</button><a class="btn" href="article.html">читать статью →</a></p></div>' }
+    html: '<div><p class="eyebrow r">спасибо</p><p class="quote r" style="--d:1.2s">Творчество к смерти</p><div class="qr r" style="--d:1.4s" id="qr"></div><p class="url r" style="--d:1.6s">konyaginaan.github.io/tvorchestvo-k-smerti</p><p class="author r" style="--d:1.8s">Конягина Анастасия</p><p class="r" style="--d:2s"><button class="btn" id="restart">↺ в начало</button></p></div>' }
 ];
 </script>
 <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
@@ -362,13 +362,12 @@ addEventListener('keydown', e => {
   else if (k === 'f' || k === 'F' || k === 'а' || k === 'А') fullscreen();
   else if (k === 'Home' || k === '0') show(0);
   else if (k === 'End') show(slides.length - 1, true);
-  else if (k === 'Escape' && !document.fullscreenElement) location.href = 'article.html';
   document.getElementById('hint').classList.add('hide');
 });
 addEventListener('click', e => { if (e.target.closest('a, button')) return; if (e.clientX < innerWidth * .25) prev(); else next(); document.getElementById('hint').classList.add('hide'); });
 let pt; addEventListener('mousemove', () => { document.body.classList.add('pointer'); clearTimeout(pt); pt = setTimeout(() => document.body.classList.remove('pointer'), 1800); });
 setTimeout(() => document.getElementById('hint').classList.add('hide'), 6000);
-document.addEventListener('click', e => { if (e.target.id === 'restart') { e.stopPropagation(); show(0); } }, true);
+document.addEventListener('click', e => { if (e.target.id === 'restart' || e.target.id === 'home') { e.stopPropagation(); show(0); } }, true);
 try { const qr = qrcode(0, 'M'); qr.addData('https://konyaginaan.github.io/tvorchestvo-k-smerti/'); qr.make(); const q = document.getElementById('qr'); if (q) q.innerHTML = qr.createSvgTag({ cellSize: 8, margin: 0, scalable: true }); } catch (e) {}
 
 const start = parseInt(location.hash.slice(1), 10);
