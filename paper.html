@@ -40,13 +40,10 @@ body.pointer { cursor: default; }
 .pl.fig.in-left { transform: translateX(-1500px) rotate(-4deg); }  /* выезжает слева */
 .pl.fig.in-right { transform: translateX(1500px) rotate(4deg); }
 .pl.fig.in-up { transition: opacity .6s ease-out, transform 2.4s cubic-bezier(.3,1.35,.5,1); transition-delay: var(--in, .8s); }
-.pl.fig.in-walk { transition: opacity .3s ease-out; transition-delay: var(--in, 1s); animation-play-state: paused; }
-.on .pl.fig.in-walk { opacity: 1; animation-play-state: running; }
 .on .pl.fig { opacity: 1; transform: none; }
 .pl.fig.in-none { opacity: 1; transform: none; transition: none; }
 .pl.fig.sway { animation: sway 7s ease-in-out infinite; animation-delay: var(--sd, 0s); }
 @keyframes sway { 0%, 100% { rotate: -1deg; } 50% { rotate: 1deg; } }
-.pl.fig.cut { filter: drop-shadow(3px 0 0 #F6EFE2) drop-shadow(-3px 0 0 #F6EFE2) drop-shadow(0 3px 0 #F6EFE2) drop-shadow(0 -3px 0 #F6EFE2) drop-shadow(14px 16px 12px rgba(0,0,0,.55)); }
 
 /* текст */
 .cap { position: absolute; z-index: 6; left: 160px; right: 160px; bottom: 120px; }
@@ -92,21 +89,9 @@ h1 { font-size: 140px; line-height: 1.02; }
 #home:hover { color: var(--accent); }
 body.pointer #home { opacity: .9; }
 .pl.layer { height: auto; pointer-events: none; transform-origin: 50% 100%; filter: drop-shadow(0 -6px 14px rgba(0,0,0,.4)); }
-.pl.fog { left: 0; top: 0; width: 100%; height: 100%; pointer-events: none; z-index: 3; mix-blend-mode: screen; }
-.pl.fog i { position: absolute; width: 34%; aspect-ratio: 1.6; margin: -10% 0 0 -17%; border-radius: 50%;
-  background: radial-gradient(closest-side, rgba(214,206,232,.75), rgba(170,160,200,.35) 55%, transparent);
-  filter: blur(18px); opacity: 0; transform: scale(.3); }
-.on .pl.fog i { animation: dreamfog 9s ease-in-out forwards, fogdrift 7s ease-in-out infinite alternate; animation-delay: calc(.4s + var(--k) * .25s), calc(var(--k) * -1.3s); }
-@keyframes dreamfog { 0% { opacity: 0; transform: scale(.3); } 30% { opacity: .95; transform: scale(1.5); } 42% { opacity: 1; transform: scale(1.8); } 60% { opacity: .15; transform: scale(2.4); } 100% { opacity: .1; transform: scale(2.6); } }
-@keyframes fogdrift { from { translate: -3% 2%; } to { translate: 3% -3%; } }
 canvas.smoke { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 5; pointer-events: none; opacity: 0; }
 .current canvas.smoke { opacity: 1; }
-.pl.layer, .pl.front { z-index: 2; }
-.pl.front.bare { filter: none !important; }
-.pl.front.plain { filter: drop-shadow(0 0 1.5px rgba(241,232,215,.7)) drop-shadow(-8px 6px 14px rgba(0,0,0,.4)); }
-.pl.front { left: 0; top: 0; width: 100%; height: 100%; pointer-events: none; transform-origin: 50% 100%;
-  filter: drop-shadow(0 -2px 0 rgba(241,232,215,.85)) drop-shadow(0 -10px 14px rgba(0,0,0,.45)); }
-.pl.front img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.pl.layer { z-index: 2; }
 .pl.smell { left: 0; top: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; opacity: 0; transition: opacity 1.5s ease 2.6s; }
 .on .pl.smell { opacity: 1; }
 .smell path { fill: none; stroke-linecap: round; vector-effect: non-scaling-stroke; stroke-dasharray: 45 55; animation: waft 6.5s linear infinite; animation-delay: calc(var(--k) * -1.8s); }
@@ -241,7 +226,6 @@ const stage = document.getElementById('stage');
 const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 // собираем слайды
-let walkCss = '';
 SCENES.forEach((sc, i) => {
   const s = document.createElement('section');
   s.className = 'slide' + (sc.end ? ' end' : '');
@@ -251,36 +235,14 @@ SCENES.forEach((sc, i) => {
     h += '<div class="pt"><div class="pt-stage">';
     h += '<img class="pl back' + (sc.dim ? ' dim' : '') + '" data-d="0" src="' + sc.back + '" alt="' + (sc.alt || '') + '">';
     const fig = (f, k) => {
-      const how = f.walk ? 'walk' : (f.enter || (f.left + f.width / 2 < 30 ? 'left' : f.left + f.width / 2 > 70 ? 'right' : 'up'));
-      let extra = '';
-      if (f.walk) {
-        // путь — точки «низ-центр» фигуры в % кадра и масштаб; последняя точка — её место.
-        // До точки f.through фигура идёт ЗА передним планом, после — перед ним.
-        const H = f.width * 1920 / (f.ar || .67) / 1080, bx = f.left + f.width / 2, by = f.top + H;
-        const name = 'walk' + i + '_' + k, n = f.walk.length - 1;
-        const fr = f.walk.map((w, j) => {
-          const pct = (j / n * 100).toFixed(1);
-          const tx = ((w.x - bx) * 19.2).toFixed(0), ty = ((w.y - by) * 10.8).toFixed(0);
-          return pct + '% { transform: translate(' + tx + 'px,' + ty + 'px) scale(' + w.s + '); z-index: ' + (j < f.through ? 1 : 4) + '; }';
-        }).join(' ');
-        walkCss += '@keyframes ' + name + ' { ' + fr + ' }\n';
-        const sw = f.sway !== false;
-        extra = 'animation-name:' + name + (sw ? ',sway' : '') + ';animation-duration:' + (f.dur || 7) + 's' + (sw ? ',7s' : '') +
-          ';animation-timing-function:' + (f.lin ? 'linear' : 'cubic-bezier(.45,.05,.55,.95)') + (sw ? ',ease-in-out' : '') + ';animation-delay:var(--in,1s)' + (sw ? ',0s' : '') +
-          ';animation-iteration-count:1' + (sw ? ',infinite' : '') + ';animation-fill-mode:both' + (sw ? ',none' : '') + ';';
-      }
-      return '<img class="pl fig in-' + how + ' ' + (f.cut ? 'cut ' : '') + (f.sway === false || f.walk ? '' : 'sway') + '" data-d="' + (f.d ?? .6) + '" src="' + f.src + '" alt="" style="left:' + f.left + '%;top:' + f.top + '%;width:' + f.width + '%;z-index:' + (f.behind ? 1 : 4) + ';--in:' + (f.at ?? (1.0 + k * 0.45)) + 's;--sd:' + (-k * 1.7) + 's;' + extra + '">';
+      const how = f.enter || (f.left + f.width / 2 < 30 ? 'left' : f.left + f.width / 2 > 70 ? 'right' : 'up');
+      return '<img class="pl fig in-' + how + (f.sway === false ? '' : ' sway') + '" data-d="' + (f.d ?? .6) + '" src="' + f.src + '" alt="" style="left:' + f.left + '%;top:' + f.top + '%;width:' + f.width + '%;z-index:' + (f.behind ? 1 : 4) + ';--in:' + (f.at ?? (1.0 + k * 0.45)) + 's;--sd:' + (-k * 1.7) + 's">';
     };
     const figs = sc.figs || [];
     figs.forEach((f, k) => { if (f.behind) h += fig(f, k); });
     (sc.fronts || []).forEach(fr => {
-      h += fr.src
-        ? '<img class="pl layer" data-d="' + (fr.d ?? .9) + '" src="' + fr.src + '" alt="" style="left:' + fr.left + '%;top:' + fr.top + '%;width:' + fr.width + '%">'
-        : '<div class="pl front' + (fr.plain ? ' plain' : '') + (fr.bare ? ' bare' : '') + '" data-d="' + (fr.d ?? .9) + '"><img src="' + sc.back + '" alt="" style="clip-path:polygon(' + fr.poly + ')"></div>';
+      h += '<img class="pl layer" data-d="' + (fr.d ?? .9) + '" src="' + fr.src + '" alt="" style="left:' + fr.left + '%;top:' + fr.top + '%;width:' + fr.width + '%">';
     });
-    if (sc.fog) {
-      h += '<div class="pl fog" data-d=".55">' + sc.fog.map((p, k) => '<i style="left:' + p[0] + '%;top:' + p[1] + '%;--k:' + k + '"></i>').join('') + '</div>';
-    }
     if (sc.smell) {
       // запах — разноцветные светлячки, плывущие по путям от неё к нему (координаты путей в % кадра)
       const cols = ['#FFE08A', '#FFB8C8', '#BDF2D0', '#C9B8FF', '#FFC98A', '#FFF4C2'];
@@ -303,11 +265,13 @@ SCENES.forEach((sc, i) => {
   }
   if (sc.smoke) h += '<canvas class="smoke" width="960" height="540"></canvas>';
   h += sc.html || '';
-  s.innerHTML = h;
+  s.innerHTML = h.replace(/<img([^>]*?) src=/g, '<img$1 data-src=');   // картинки грузятся по мере приближения к слайду
   stage.appendChild(s);
 });
-{ const st = document.createElement('style'); st.textContent = walkCss; document.head.appendChild(st); }
 const slides = [...stage.querySelectorAll('.slide')];
+function loadAround(i) {
+  for (let j = i - 1; j <= i + 2; j++) if (slides[j]) slides[j].querySelectorAll('img[data-src]').forEach(im => { im.src = im.dataset.src; im.removeAttribute('data-src'); });
+}
 
 // задник вписывается в кадр целиком по ширине или высоте
 function layoutStages() {
@@ -332,24 +296,32 @@ addEventListener('resize', fit); fit();
 // камера въезжает в сцену: слои ближе к зрителю приближаются быстрее
 let t0 = 0;
 const ease = x => 1 - Math.pow(1 - x, 3);
+let geo = null, geoSlide = null, done = false;
+function measure(s) {      // точка опоры каждого слоя относительно центра камеры
+  const st = s.querySelector('.pt-stage'); if (!st) return null;
+  const cx = st.offsetWidth / 2, cy = st.offsetHeight * 0.6;
+  return [...s.querySelectorAll('.pl')].map(l => {
+    const back = l.classList.contains('back');
+    const L = l.offsetLeft ?? 0, T = l.offsetTop ?? 0, Wd = l.offsetWidth ?? st.offsetWidth, Ht = l.offsetHeight ?? st.offsetHeight;
+    return { l, d: parseFloat(l.dataset.d || 0), dx: L + Wd / 2 - cx, dy: T + Ht * (back ? 0.55 : 1) - cy };
+  });
+}
+addEventListener('resize', () => { geo = null; });
 function frame(now) {
   const s = slides[cur];
   if (s && !calm) {
-    if (!t0) t0 = now;
-    const p = ease(Math.min(1, (now - t0) / 16000));
-    // все слои масштабируются вокруг одной точки камеры (центр кадра, чуть ниже середины),
-    // ближние — сильнее; поэтому вырезка и её передний план не разъезжаются
-    const st = s.querySelector('.pt-stage');
-    if (st) {
-      const cx = st.offsetWidth / 2, cy = st.offsetHeight * 0.6;
-      s.querySelectorAll('.pl').forEach(l => {
-        const d = parseFloat(l.dataset.d || 0), k = 1 + p * (0.05 + d * 0.3);
-        const back = l.classList.contains('back');
-        const L = l.offsetLeft ?? 0, T = l.offsetTop ?? 0, Wd = l.offsetWidth ?? st.offsetWidth, Ht = l.offsetHeight ?? st.offsetHeight;
-        const ox = L + Wd / 2, oy = T + Ht * (back ? 0.55 : 1);
-        l.style.scale = k.toFixed(4);
-        l.style.translate = ((ox - cx) * (k - 1)).toFixed(1) + 'px ' + ((oy - cy) * (k - 1)).toFixed(1) + 'px';
+    if (!t0) { t0 = now; geo = null; done = false; }
+    if (geoSlide !== s) geo = null;
+    if (!geo) { geo = measure(s); geoSlide = s; }
+    const raw = (now - t0) / 16000;
+    if (geo && !done) {
+      const p = ease(Math.min(1, raw));
+      geo.forEach(g => {
+        const k = 1 + p * (0.05 + g.d * 0.3);
+        g.l.style.scale = k.toFixed(4);
+        g.l.style.translate = (g.dx * (k - 1)).toFixed(1) + 'px ' + (g.dy * (k - 1)).toFixed(1) + 'px';
       });
+      if (raw >= 1) done = true;
     }
   }
   requestAnimationFrame(frame);
@@ -359,6 +331,7 @@ let cur = 0, stepIdx = 0, first = true, leaveT;
 const steps = s => [...s.querySelectorAll('.step')];
 function show(i, fromEnd) {
   i = Math.max(0, Math.min(slides.length - 1, i));
+  loadAround(i);
   const prevS = slides[cur], nextS = slides[i], fwd = i >= cur;
   const anim = first ? false : (prevS !== nextS && !calm);
   first = false;
@@ -374,7 +347,6 @@ function show(i, fromEnd) {
     }, 1650);
   } else slides.forEach(s => { if (s !== nextS) s.classList.remove('on'); });
   nextS.classList.add('current'); nextS.classList.remove('on'); void nextS.offsetWidth; nextS.classList.add('on');
-  nextS.querySelectorAll('.in-walk').forEach(e => e.getAnimations().forEach(a => { if (a.animationName !== 'sway') a.currentTime = 0; }));
   cur = i; t0 = 0;
   const st = steps(slides[i]);
   stepIdx = fromEnd ? st.length : 0;
