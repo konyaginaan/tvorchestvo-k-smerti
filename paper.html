@@ -116,12 +116,31 @@ body.pointer #home { opacity: .9; }
 .cap.center .labels { justify-content: center; } .cap .labels .label { max-width: 520px; }
 .pl.back.dim { filter: brightness(.35) blur(6px); }
 @media (prefers-reduced-motion: reduce) { .slide, .r, .pl { transition: none !important; animation: none !important; } }
+
+/* режим правки */
+#ed-open { position: fixed; top: 14px; right: 18px; z-index: 20; font: 15px 'Lora', Georgia, serif; color: var(--soft); background: rgba(14,11,9,.55); border: 1px solid rgba(227,167,129,.35); border-radius: 40px; padding: 6px 16px; cursor: pointer; opacity: 0; transition: opacity .6s; }
+body.pointer #ed-open { opacity: .9; }
+#edbar { position: fixed; left: 50%; top: 12px; transform: translateX(-50%); z-index: 30; display: none; gap: 10px; align-items: center; font: 14px 'Lora', Georgia, serif; color: var(--ink); background: #EDE3CF; border-radius: 12px; padding: 8px 12px; box-shadow: 0 10px 30px rgba(0,0,0,.5); white-space: nowrap; }
+#edbar button { font: inherit; background: #fff; border: 1px solid #CDB894; border-radius: 8px; padding: 4px 10px; cursor: pointer; }
+#edbar #ed-done { background: var(--rust); color: #fff; border-color: var(--rust); }
+body.editing { cursor: default; }
+body.editing #edbar { display: flex; }
+body.editing #ed-open, body.editing #home, body.editing #hint { display: none; }
+body.editing .r, body.editing .on .r.step { opacity: 1 !important; transform: none !important; filter: none !important; transition: none !important; }
+body.editing .cap { outline: 1px dashed rgba(241,232,215,.55); outline-offset: 10px; }
+body.editing [data-ek] { cursor: text; }
+body.editing [data-ek]:focus { outline: 2px solid var(--accent); outline-offset: 4px; }
+.ed-grip { display: none; position: absolute; left: -54px; top: -6px; width: 40px; height: 40px; border-radius: 50%; background: var(--accent); color: var(--ink); font-size: 24px; line-height: 40px; text-align: center; cursor: grab; z-index: 2; box-shadow: 0 4px 12px rgba(0,0,0,.5); user-select: none; }
+body.editing .ed-grip { display: block; }
 </style>
 </head>
 <body>
 <div id="stage"></div>
 <div id="bar"></div>
 <button id="home" title="К первому слайду (0)">↺ в начало</button>
+<div id="edbar"><span>Правка: щёлкните по тексту, чтобы изменить · тяните за ✥, чтобы переставить · ← → листать</span>
+<button id="ed-save">Скачать правки</button><button id="ed-reset">Сбросить этот слайд</button><button id="ed-done">Готово</button></div>
+<button id="ed-open" title="Режим правки (E)">✎ править</button>
 <div id="hint">→ или пробел — дальше · ← — назад · F — во весь экран · 0 — в начало</div>
 
 <script>
@@ -357,6 +376,9 @@ function prev() { const st = steps(slides[cur]); if (stepIdx > 0) { stepIdx--; s
 function fullscreen() { if (!document.fullscreenElement) document.documentElement.requestFullscreen?.().catch(() => {}); else document.exitFullscreen?.(); }
 addEventListener('keydown', e => {
   const k = e.key;
+  if (e.target.isContentEditable) return;
+  if ((k === 'e' || k === 'E' || k === 'у' || k === 'У') && !e.metaKey && !e.ctrlKey) { toggleEdit(); return; }
+  if (document.body.classList.contains('editing') && !['ArrowRight', 'ArrowLeft', 'PageDown', 'PageUp'].includes(k)) return;
   if (['ArrowRight', 'ArrowDown', 'PageDown', ' ', 'Enter', 'n', 'N'].includes(k)) { e.preventDefault(); next(); }
   else if (['ArrowLeft', 'ArrowUp', 'PageUp', 'Backspace', 'p', 'P'].includes(k)) { e.preventDefault(); prev(); }
   else if (k === 'f' || k === 'F' || k === 'а' || k === 'А') fullscreen();
@@ -364,7 +386,7 @@ addEventListener('keydown', e => {
   else if (k === 'End') show(slides.length - 1, true);
   document.getElementById('hint').classList.add('hide');
 });
-addEventListener('click', e => { if (e.target.closest('a, button')) return; if (e.clientX < innerWidth * .25) prev(); else next(); document.getElementById('hint').classList.add('hide'); });
+addEventListener('click', e => { if (e.target.closest('a, button') || document.body.classList.contains('editing')) return; if (e.clientX < innerWidth * .25) prev(); else next(); document.getElementById('hint').classList.add('hide'); });
 let pt; addEventListener('mousemove', () => { document.body.classList.add('pointer'); clearTimeout(pt); pt = setTimeout(() => document.body.classList.remove('pointer'), 1800); });
 setTimeout(() => document.getElementById('hint').classList.add('hide'), 6000);
 document.addEventListener('click', e => { if (e.target.id === 'restart' || e.target.id === 'home') { e.stopPropagation(); show(0); } }, true);
@@ -373,6 +395,75 @@ try { const qr = qrcode(0, 'M'); qr.addData('https://konyaginaan.github.io/tvorc
 const start = parseInt(location.hash.slice(1), 10);
 show(isNaN(start) ? 0 : start - 1);
 requestAnimationFrame(frame);
+</script>
+
+<script>
+// ===== режим правки: тексты и положение подписей, хранятся по номеру слайда =====
+const ED_KEY = 'paper-edits-v1';
+let edits = {};
+const capsOf = s => [...s.querySelectorAll(':scope > .cap')];
+slides.forEach(s => {
+  s.querySelectorAll('.cap p, .cap h1, .cap .label b, .cap .label span, .cap .label small, .cap .ghosts span, .cap .chip').forEach((el, n) => el.dataset.ek = n);
+  capsOf(s).forEach(c => { const g = document.createElement('span'); g.className = 'ed-grip'; g.textContent = '✥'; g.title = 'Тяните, чтобы переставить'; c.prepend(g); });
+});
+function applyEdits() {
+  slides.forEach((s, i) => {
+    const e = edits[i]; if (!e) return;
+    Object.entries(e.t || {}).forEach(([n, html]) => { const el = s.querySelector('[data-ek="' + n + '"]'); if (el) el.innerHTML = html; });
+    capsOf(s).forEach((c, n) => { const m = (e.m || {})[n]; c.style.translate = m ? m[0] + 'px ' + m[1] + 'px' : ''; });
+  });
+}
+function saveLocal() { try { localStorage.setItem(ED_KEY, JSON.stringify(edits)); } catch (e) {} }
+async function loadEdits() {
+  try { const r = await fetch('paper-edits.json?x=' + Date.now()); if (r.ok) edits = await r.json(); } catch (e) {}
+  try { const l = JSON.parse(localStorage.getItem(ED_KEY) || 'null'); if (l) edits = l; } catch (e) {}
+  applyEdits();
+}
+loadEdits();
+function toggleEdit(on) {
+  on = on ?? !document.body.classList.contains('editing');
+  document.body.classList.toggle('editing', on);
+  document.querySelectorAll('[data-ek]').forEach(el => el.contentEditable = on ? 'true' : 'false');
+  if (!on && document.activeElement) document.activeElement.blur();
+}
+document.addEventListener('input', e => {
+  const el = e.target.closest('[data-ek]'); if (!el) return;
+  const i = slides.indexOf(el.closest('.slide'));
+  ((edits[i] ||= {}).t ||= {})[el.dataset.ek] = el.innerHTML; saveLocal();
+});
+document.addEventListener('paste', e => {   // вставлять только текст, без чужого оформления
+  if (!e.target.closest('[data-ek]')) return;
+  e.preventDefault(); document.execCommand('insertText', false, (e.clipboardData || window.clipboardData).getData('text/plain'));
+});
+// перетаскивание подписи за ✥ (в координатах сцены 1920×1080)
+document.addEventListener('pointerdown', e => {
+  const g = e.target.closest('.ed-grip'); if (!g) return;
+  e.preventDefault();
+  const cap = g.parentElement, s = cap.closest('.slide'), i = slides.indexOf(s), n = capsOf(s).indexOf(cap);
+  const k = stage.getBoundingClientRect().width / 1920;
+  const cur = ((edits[i] || {}).m || {})[n] || [0, 0];
+  const x0 = e.clientX, y0 = e.clientY;
+  g.style.cursor = 'grabbing';
+  const move = ev => {
+    const m = [Math.round(cur[0] + (ev.clientX - x0) / k), Math.round(cur[1] + (ev.clientY - y0) / k)];
+    ((edits[i] ||= {}).m ||= {})[n] = m; cap.style.translate = m[0] + 'px ' + m[1] + 'px';
+  };
+  const up = () => { removeEventListener('pointermove', move); removeEventListener('pointerup', up); g.style.cursor = ''; saveLocal(); };
+  addEventListener('pointermove', move); addEventListener('pointerup', up);
+});
+document.getElementById('ed-open').onclick = e => { e.stopPropagation(); toggleEdit(true); };
+document.getElementById('ed-done').onclick = e => { e.stopPropagation(); toggleEdit(false); };
+document.getElementById('ed-reset').onclick = e => {
+  e.stopPropagation();
+  if (!confirm('Вернуть исходные тексты и положение на этом слайде?')) return;
+  delete edits[cur]; saveLocal(); location.reload();
+};
+document.getElementById('ed-save').onclick = e => {
+  e.stopPropagation();
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([JSON.stringify(edits, null, 1)], { type: 'application/json' }));
+  a.download = 'paper-edits.json'; a.click();
+};
 </script>
 <script src="typo.js"></script>
 </body>
